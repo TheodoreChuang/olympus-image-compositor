@@ -1,8 +1,8 @@
 // BgCanvas = Background Canvas
 //
 // Allows user to upload & position a background onto a canvas
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
 import {
   // Grid,
@@ -16,8 +16,8 @@ import {
 
 import Cropper from "react-cropper";
 import "cropperjs/dist/cropper.css";
-import { classifyOhmieImage } from "../helpers/classifyImage";
-import {heightFromAspectRatio} from "../helpers/index.js";
+import { classifyIndexImage } from "../helpers/classifyImage";
+import { heightFromAspectRatio } from "../helpers/index.js";
 
 const BgCanvas = React.forwardRef((props, ref) => {
   const fileImage = props.fileImage;
@@ -29,26 +29,27 @@ const BgCanvas = React.forwardRef((props, ref) => {
     imageSmoothingQuality: "high",
   };
 
-  
-
   const onCrop = () => {
     // cropperContainerRef may not exist since we hide areas in different steps
     // if (viewContainerRef.current) {
-      const imageElement = cropperRef?.current;
-      const cropper = imageElement?.cropper;
-      // console.log(cropper.getCroppedCanvas().toDataURL());
-      let image = new Image();
-      image.onload = () => {
-
-        // this .onload() is running on dropzone, too... so skip out with the if
-        // if (viewContainerRef.current) {
-          // image = classifyImage(image, viewContainerRef.current.offsetWidth, heightFromAspectRatio(viewContainerRef.current.offsetWidth));
-          image = classifyOhmieImage(image, fileImage.parentWidth, heightFromAspectRatio(fileImage.parentWidth, props.aspectRatio));
-          console.log("cropped", image);
-          props.setCroppedBg(image);
-        // }
-      };
-      image.src = cropper.getCroppedCanvas(cropperCanvasSettings).toDataURL(props.fileImageType, 1);
+    const imageElement = cropperRef?.current;
+    const cropper = imageElement?.cropper;
+    // console.log(cropper.getCroppedCanvas().toDataURL());
+    let image = new Image();
+    image.onload = () => {
+      // this .onload() is running on dropzone, too... so skip out with the if
+      // if (viewContainerRef.current) {
+      // image = classifyImage(image, viewContainerRef.current.offsetWidth, heightFromAspectRatio(viewContainerRef.current.offsetWidth));
+      image = classifyIndexImage(
+        image,
+        fileImage.parentWidth,
+        heightFromAspectRatio(fileImage.parentWidth, props.aspectRatio)
+      );
+      console.log("cropped", image);
+      props.setCroppedBg(image);
+      // }
+    };
+    image.src = cropper.getCroppedCanvas(cropperCanvasSettings).toDataURL(props.fileImageType, 1);
     // }
   };
 
@@ -71,7 +72,6 @@ const BgCanvas = React.forwardRef((props, ref) => {
         />
       </Box>
     </Box>
-    
   );
 });
 
@@ -87,7 +87,7 @@ BgCanvas.propTypes = {
   areaHt: PropTypes.number.isRequired,
   fileImageType: PropTypes.string.isRequired,
   containerStyle: PropTypes.object.isRequired,
-  aspectRatio: PropTypes.number.isRequired
+  aspectRatio: PropTypes.number.isRequired,
 };
 
-export default BgCanvas
+export default BgCanvas;

@@ -1,6 +1,6 @@
 {
-  "short_name": "Olympus PFP Compositor",
-  "name": "Olympus Image Compositor",
+  "short_name": "Index Coop",
+  "name": "Index Coop",
   "icons": [
     {
       "src": "favicon.ico",
@@ -8,18 +8,13 @@
       "type": "image/x-icon"
     },
     {
-      "src": "android-chrome-192x192.png",
+      "src": "apple-touch-icon.png",
       "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "android-chrome-512x512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+      "sizes": "180x180"
     }
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#FCFCFC",
-  "background_color": "#080F35"
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
 }

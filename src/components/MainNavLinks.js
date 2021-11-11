@@ -8,17 +8,15 @@ import {
   // CircularProgress,
   Zoom,
 } from "@material-ui/core";
-import {
-  NavLink,
-} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const compositorPaper = {
   padding: "15px",
   textAlign: "center",
   // marginBottom: "20px",
-}
+};
 
-function OhmieCard(props) {
+function IndexCard(props) {
   return (
     <Zoom in={true}>
       <Paper className={`ohm-card`} elevation={3} style={compositorPaper}>
@@ -26,7 +24,9 @@ function OhmieCard(props) {
           <Grid item>
             <div className="card-header">
               <Typography variant="h5">Welcome, Incooohmer</Typography>
-              <Typography variant="h5" color="textSecondary" style={{marginBottom: "0.5rem"}}>Pick an option</Typography>
+              <Typography variant="h5" color="textSecondary" style={{ marginBottom: "0.5rem" }}>
+                Pick an option
+              </Typography>
             </div>
           </Grid>
           <Grid item>
@@ -38,19 +38,19 @@ function OhmieCard(props) {
               className="connect-button"
               activeClassName="connect-button"
             >
-              Proof of Ohmie
+              Proof of Index
             </Button>
           </Grid>
           <Grid item>
             <Button
               component={NavLink}
-              to="/ohmiecard"
+              to="/indexcard"
               variant="contained"
               color="primary"
               className="connect-button"
               activeClassName="connect-button"
             >
-              Ohmie Card
+              Index Card
             </Button>
           </Grid>
         </Grid>
@@ -59,4 +59,4 @@ function OhmieCard(props) {
   );
 }
 
-export default OhmieCard;
+export default IndexCard;

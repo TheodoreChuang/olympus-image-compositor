@@ -35,18 +35,20 @@ $mediaMinWidth: 480px;
   -o-transition: 0.33s ease-in-out;
   transition: 0.33s ease-in-out;
   &:hover {
-    -webkit-transform: translate(0,-1em);
-    -moz-transform: translate(0,-1em);
-    -o-transform: translate(0,-1em);
-    -ms-transform: translate(0,-1em);
-    transform: translate(0,-1em);
+    -webkit-transform: translate(0, -1em);
+    -moz-transform: translate(0, -1em);
+    -o-transform: translate(0, -1em);
+    -ms-transform: translate(0, -1em);
+    transform: translate(0, -1em);
   }
 }
 
 .module-border-wrap {
   margin: 2rem;
   // position: relative;
-  background: radial-gradient(98% 49.86% at 100.03% 100%, #3374A3 0%, rgba(51, 116, 163, 0.05) 100%), radial-gradient(24.21% 39.21% at 0% 0%, rgba(255, 255, 255, 0.81) 0%, rgba(255, 255, 255, 0.19) 100%), radial-gradient(21.19% 40.1% at 100.03% 0%, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+  background: radial-gradient(98% 49.86% at 100.03% 100%, #3374a3 0%, rgba(51, 116, 163, 0.05) 100%),
+    radial-gradient(24.21% 39.21% at 0% 0%, rgba(255, 255, 255, 0.81) 0%, rgba(255, 255, 255, 0.19) 100%),
+    radial-gradient(21.19% 40.1% at 100.03% 0%, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
   padding: 1.1px 1.2px 1.2px 1.2px;
   border-radius: 16px;
 
@@ -62,14 +64,16 @@ $mediaMinWidth: 480px;
 .inner-module-border-wrap {
   margin: 1rem;
   // position: relative;
-  background: radial-gradient(98% 49.86% at 100.03% 100%, #3374A3 0%, rgba(51, 116, 163, 0.05) 100%), radial-gradient(24.21% 39.21% at 0% 0%, rgba(255, 255, 255, 0.81) 0%, rgba(255, 255, 255, 0.19) 100%), radial-gradient(21.19% 40.1% at 100.03% 0%, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+  background: radial-gradient(98% 49.86% at 100.03% 100%, #3374a3 0%, rgba(51, 116, 163, 0.05) 100%),
+    radial-gradient(24.21% 39.21% at 0% 0%, rgba(255, 255, 255, 0.81) 0%, rgba(255, 255, 255, 0.19) 100%),
+    radial-gradient(21.19% 40.1% at 100.03% 0%, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
   padding: 1.6px;
   border-radius: 16px;
 
   .inner-module {
     background: rgba(45, 60, 120, 1);
-  // background: radial-gradient(98% 49.86% at 100.03% 100%, #3374A3 0%, rgba(51, 116, 163, 0.05) 100%), radial-gradient(24.21% 39.21% at 0% 0%, rgba(255, 255, 255, 0.81) 0%, rgba(255, 255, 255, 0.19) 100%), radial-gradient(21.19% 40.1% at 100.03% 0%, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
-  // background: linear-gradient(105.87deg, rgba(255, 255, 255, 0.4) 3.04%, rgba(255, 255, 255, 0) 96.05%);
+    // background: radial-gradient(98% 49.86% at 100.03% 100%, #3374A3 0%, rgba(51, 116, 163, 0.05) 100%), radial-gradient(24.21% 39.21% at 0% 0%, rgba(255, 255, 255, 0.81) 0%, rgba(255, 255, 255, 0.19) 100%), radial-gradient(21.19% 40.1% at 100.03% 0%, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0) 100%);
+    // background: linear-gradient(105.87deg, rgba(255, 255, 255, 0.4) 3.04%, rgba(255, 255, 255, 0) 96.05%);
     color: white;
     // padding: 2rem;
     border-radius: 16px;
@@ -162,8 +166,8 @@ $mediaMinWidth: 480px;
   line-height: 24px !important;
 }
 
-.ohmie-button {
-  background-color: #FFFFFF !important;
+.index-button {
+  background-color: #ffffff !important;
   border-radius: 8px;
   width: 200px;
   height: 50px !important;
@@ -182,15 +186,15 @@ $mediaMinWidth: 480px;
 
   &:hover {
     // background-color: #e5e5e5 !important;
-    background-color: #8FA3F1 !important;
+    background-color: #8fa3f1 !important;
 
     .btn-text {
-      color: #FFFFFF !important;
+      color: #ffffff !important;
     }
   }
 }
 
-.outlined-ohmie-button {
+.outlined-index-button {
   // background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 100%), #FFFFFF;
   border-radius: 8px;
   border: 1px solid rgba(255, 255, 255, 0.8) !important;
@@ -275,7 +279,7 @@ $mediaMinWidth: 480px;
   flex-grow: 0;
   margin: 30px 0px;
   display: flex;
-  
+
   flex-flow: row wrap;
   align-items: flex-start;
   // card-navs side by side are 560+560 including padding

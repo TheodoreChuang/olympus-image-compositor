@@ -1,6 +1,6 @@
-// OhmieCardV3.js
+// IndexCardV3.js
 //
-// OhmieCardV3 should be the compositor. Combines the three canvas layers:
+// IndexCardV3 should be the compositor. Combines the three canvas layers:
 // 1. BgCanvas.js
 // 2. PfpCanvas.js
 // 3. TextCanvas.js
@@ -8,15 +8,7 @@
 // should allow users to turn on/off each of the three layers
 // should allow users to switch back & forth to editing each of the three layers
 //   - editing should occur within each layer.js component
-import {
-  Grid,
-  Box,
-  Paper,
-  Typography,
-  Button,
-  CircularProgress,
-  Zoom,
-} from "@material-ui/core";
+import { Grid, Box, Paper, Typography, Button, CircularProgress, Zoom } from "@material-ui/core";
 import {
   isIOS,
   isMobile,
@@ -27,13 +19,13 @@ import {
   // browserName
 } from "react-device-detect";
 
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from "react";
 
-import {useDropzone} from 'react-dropzone';
+import { useDropzone } from "react-dropzone";
 
 import "./stake.scss";
 
-import sOhm from '../assets/token_sOHM.png';
+import sOhm from "../assets/token_sOHM.png";
 import classifyImage from "../helpers/classifyImage";
 import RGB2Hex from "../helpers/RGB2Hex";
 
@@ -53,7 +45,7 @@ const canvasContainer = {
   // flexDirection: 'row',
   // flexWrap: 'wrap',
   // marginTop: 16,
-  margin: 'auto',
+  margin: "auto",
   width: "100%",
   position: "relative",
 };
@@ -63,20 +55,20 @@ const canvasStyle = {
   position: "absolute",
   top: 0,
   left: 0,
-}
+};
 
 const dropContainerStyle = {
   display: "flex",
   flexFlow: "column wrap",
-  justifyContent: "center"
+  justifyContent: "center",
   // backgroundColor: shade(dark.palette.background.paperBg, 0.5)
-}
+};
 
 function CompositorV3(props) {
   var sOhmImg = new Image();
   sOhmImg.src = sOhm;
   sOhmImg = classifyImage(sOhmImg);
-  const [stampFile, setStampFile] = useState(sOhmImg); 
+  const [stampFile, setStampFile] = useState(sOhmImg);
   const sOhmSize = 60;
   const fixedWidth = 1013;
   const fixedHeight = 446;
@@ -91,21 +83,21 @@ function CompositorV3(props) {
 
   const windowSize = useWindowSize();
 
-  const areaHt = (windowSize.height*0.7 ) || 0;
+  const areaHt = windowSize.height * 0.7 || 0;
 
   const compositorPaper = {
     padding: "15px",
     textAlign: "center",
     // marginBottom: "20px",
-  }
+  };
 
   const dropZoneReg = {
     display: "flex",
     flexFlow: "column wrap",
     alignItems: "center",
     cursor: "pointer",
-    height: areaHt
-  }
+    height: areaHt,
+  };
 
   const outlineButton = {
     height: "33px",
@@ -113,7 +105,7 @@ function CompositorV3(props) {
     marginRight: "0.25rem",
     marginTop: "0.5rem",
     marginBottom: "0.5rem",
-  }
+  };
 
   const containerButton = {
     height: "33px",
@@ -121,12 +113,12 @@ function CompositorV3(props) {
     marginRight: "0.25rem",
     marginTop: "0.5rem",
     marginBottom: "0.5rem",
-  }
+  };
 
   const hiddenButton = {
     ...containerButton,
-    ...{visibility: "hidden"}
-  }
+    ...{ visibility: "hidden" },
+  };
 
   const [fileImage, setfileImage] = useState(false);
   const [fileImageType, setfileImageType] = useState("image/png");
@@ -141,24 +133,24 @@ function CompositorV3(props) {
   const [userName, setUserName] = useState("[your name]");
   const [textColor, setTextColor] = useState({
     hex: "#000000",
-    rgb: {r: 0, g: 0, b: 0, a: 100},
+    rgb: { r: 0, g: 0, b: 0, a: 100 },
   });
   // default white
   const [buttonColor, setButtonColor] = useState({
     hex: "#FFFFFF",
-    rgb: {r: 255, g: 255, b: 255, a: 100},
+    rgb: { r: 255, g: 255, b: 255, a: 100 },
   });
 
   /**
    * backgroundColor has two keys, denoted as params below
    * @param {*} fill: true if we want to fill the background
    * @param {*} color: the color to be used with react-color
-  */
+   */
   const [backgroundColor, setBackgroundColor] = useState({
     fill: false,
     color: {
       hex: "#FFFFFF",
-      rgb: {r: 255, g: 255, b: 255, a: 100},
+      rgb: { r: 255, g: 255, b: 255, a: 100 },
     },
   });
   const [lastTextEvent, setLastTextEvent] = useState(null);
@@ -166,270 +158,272 @@ function CompositorV3(props) {
   const getViewWidth = () => {
     var element = viewContainerRef.current;
     var styles = window.getComputedStyle(element);
-    var padding = parseFloat(styles.paddingLeft) +
-                  parseFloat(styles.paddingRight);
+    var padding = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
 
     return element.clientWidth - padding;
-  }
+  };
 
   // allows detects clicking on canvas & places image
   // will need to pass in:
   // whichCanvas
   // which image is drawn...
-  const setCanvasListeners = useCallback(
-    () => {
-      var canvasOnly = pfpCanvasRef.current;
-      var ctx = canvasOnly.getContext('2d');
+  const setCanvasListeners = useCallback(() => {
+    var canvasOnly = pfpCanvasRef.current;
+    var ctx = canvasOnly.getContext("2d");
 
-      var logo = new Image();
-      logo.src = stampFile.src;
+    var logo = new Image();
+    logo.src = stampFile.src;
 
-      // When true, moving the mouse draws on the canvas
-      let isDrawing = false;
-      
-      //////////// HISTORY
-      // TODO (appleseed):
-      // 1. height & width are fixed aspect ratio now...
-      // 2. also won't want to redraw since this will apply to the pfpCanvas only. Just empty it
-      var history = {
-        restoreState: function() {
-          ctx.clearRect(0, 0, croppedBg.governing_width, croppedBg.governing_height);
-          // ctx.drawImage(croppedBg, 0, 0, croppedBg.governing_width, croppedBg.governing_height);
-        }
+    // When true, moving the mouse draws on the canvas
+    let isDrawing = false;
+
+    //////////// HISTORY
+    // TODO (appleseed):
+    // 1. height & width are fixed aspect ratio now...
+    // 2. also won't want to redraw since this will apply to the pfpCanvas only. Just empty it
+    var history = {
+      restoreState: function () {
+        ctx.clearRect(0, 0, croppedBg.governing_width, croppedBg.governing_height);
+        // ctx.drawImage(croppedBg, 0, 0, croppedBg.governing_width, croppedBg.governing_height);
+      },
+    };
+    ///////////////
+
+    // Add the event listeners for mousedown, mousemove, and mouseup
+    canvasOnly.addEventListener("mousedown", e => {
+      // console.log("mousedown");
+      isDrawing = true;
+    });
+
+    // drawImage usage
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+    canvasOnly.addEventListener("mousemove", e => {
+      if (isDrawing === true) {
+        if (croppedBg) history.restoreState();
+        ctx.drawImage(
+          logo,
+          e.offsetX - stampSize.width / 2,
+          e.offsetY - stampSize.height / 2,
+          stampSize.width,
+          stampSize.height
+        );
       }
-      ///////////////
-      
-      // Add the event listeners for mousedown, mousemove, and mouseup
-      canvasOnly.addEventListener('mousedown', e => {
-        // console.log("mousedown");
-        isDrawing = true;
-      });
+    });
 
-      // drawImage usage
-      // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
-      canvasOnly.addEventListener('mousemove', e => {
-        if (isDrawing === true) {
-          if (croppedBg) history.restoreState();
-          ctx.drawImage(logo, (e.offsetX-(stampSize.width/2)), (e.offsetY-(stampSize.height/2)), stampSize.width, stampSize.height);
-        }
-      });
-
-      window.addEventListener('mouseup', e => {
-        if (isDrawing === true) {
-          if (croppedBg) history.restoreState();
-          ctx.drawImage(logo, (e.offsetX-(stampSize.width/2)), (e.offsetY-(stampSize.height/2)), stampSize.width, stampSize.height);
-          isDrawing = false;
-        }
-      });
-    }, [stampSize.height, stampSize.width, croppedBg, stampFile]
-  );
+    window.addEventListener("mouseup", e => {
+      if (isDrawing === true) {
+        if (croppedBg) history.restoreState();
+        ctx.drawImage(
+          logo,
+          e.offsetX - stampSize.width / 2,
+          e.offsetY - stampSize.height / 2,
+          stampSize.width,
+          stampSize.height
+        );
+        isDrawing = false;
+      }
+    });
+  }, [stampSize.height, stampSize.width, croppedBg, stampFile]);
 
   // allows detects clicking on canvas & places text
-  const applyTextListeners = useCallback(
-    () => {
-      // if you already set the listeners... you can stop
-      // if (textListenersApplied === true) return;
+  const applyTextListeners = useCallback(() => {
+    // if you already set the listeners... you can stop
+    // if (textListenersApplied === true) return;
 
-      // scalingRatio for scaling text size on mobile...
-      const scalingRatio = fixedHeight/croppedBg.governing_height;
+    // scalingRatio for scaling text size on mobile...
+    const scalingRatio = fixedHeight / croppedBg.governing_height;
 
-      // var redHatFont = new FontFace("RedHatDisplay", "../assets/fonts/");
-      // redHatFont.load().then(function(font){
-      //   // with canvas, if this is ommited won't work
-      //   document.fonts.add(font);
-      //   console.log('Font loaded');
-      // });
+    // var redHatFont = new FontFace("RedHatDisplay", "../assets/fonts/");
+    // redHatFont.load().then(function(font){
+    //   // with canvas, if this is ommited won't work
+    //   document.fonts.add(font);
+    //   console.log('Font loaded');
+    // });
 
-      var canvasOnly = textCanvasRef.current;
-      var ctx = canvasOnly.getContext('2d');
+    var canvasOnly = textCanvasRef.current;
+    var ctx = canvasOnly.getContext("2d");
 
-      // When true, moving the mouse draws on the canvas
-      let isDrawing = false;
-      
-      //////////// HISTORY
-      // NOTE (appleseed):
-      // 1. height & width are fixed aspect ratio now...
-      // 2. also won't want to redraw since this will apply to the textCanvas only. Just empty it
-      var history = {
-        restoreState: function() {
-          ctx.clearRect(0, 0, croppedBg.governing_width, croppedBg.governing_height);
-          // ctx.drawImage(croppedBg, 0, 0, croppedBg.governing_width, croppedBg.governing_height);
-        }
+    // When true, moving the mouse draws on the canvas
+    let isDrawing = false;
+
+    //////////// HISTORY
+    // NOTE (appleseed):
+    // 1. height & width are fixed aspect ratio now...
+    // 2. also won't want to redraw since this will apply to the textCanvas only. Just empty it
+    var history = {
+      restoreState: function () {
+        ctx.clearRect(0, 0, croppedBg.governing_width, croppedBg.governing_height);
+        // ctx.drawImage(croppedBg, 0, 0, croppedBg.governing_width, croppedBg.governing_height);
+      },
+    };
+    ///////////////
+
+    /**
+     * used in conjunction with `canvasOnly.width to determine whether user clicked on left half or right half
+     * @param {integer} offsetX position where user clicked
+     * @param {float} fontSize used to determine ht of 1st row
+     * @returns {array} x position, y position
+     */
+    const setTextLeftOrRight = (offsetX, fontSize) => {
+      // newY should be scaled based on canvasOnly.height
+      // const newY = 67 + fontSize;
+      var newY = (75 / 950) * canvasOnly.height;
+      var newX;
+      console.log("offsetX", offsetX, parseFloat(canvasOnly.style.width) / 2, canvasOnly.style.width);
+      if (offsetX < parseFloat(canvasOnly.style.width) / 2) {
+        console.log("l");
+        // left
+        // newX = 67;
+        newX = (67 / 2154) * canvasOnly.width;
+      } else {
+        console.log("r");
+
+        // right
+        // desired: [x, y] = [375, 75] on [w, h] = [2154, 950]
+        // x/w === 375/2154
+        // y/h === 75/950
+        newX = (375 / 2154) * canvasOnly.width;
+        // newX = canvasOnly.width - 67;
       }
-      ///////////////
+      console.log("return");
 
-      /**
-       * used in conjunction with `canvasOnly.width to determine whether user clicked on left half or right half
-       * @param {integer} offsetX position where user clicked
-       * @param {float} fontSize used to determine ht of 1st row
-       * @returns {array} x position, y position
-       */
-      const setTextLeftOrRight = (offsetX, fontSize) => {
-        // newY should be scaled based on canvasOnly.height
-        // const newY = 67 + fontSize;
-        var newY = 75/950 * canvasOnly.height;
-        var newX;
-        console.log("offsetX", offsetX, parseFloat(canvasOnly.style.width)/2, canvasOnly.style.width);
-        if ( offsetX < parseFloat(canvasOnly.style.width)/2 ) {
-          console.log("l");
-          // left
-          // newX = 67;
-          newX = 67/2154 * canvasOnly.width;
+      return [newX, newY];
+    };
 
-        } else {
-          console.log("r");
+    let name = userName;
+    let nameString = "Meet " + name;
+    let useTextColor = textColor.hex;
+    let useButtonColor = buttonColor.hex;
 
-          // right
-          // desired: [x, y] = [375, 75] on [w, h] = [2154, 950]
-          // x/w === 375/2154
-          // y/h === 75/950
-          newX = 375/2154 * canvasOnly.width;
-          // newX = canvasOnly.width - 67;
+    const textToApply = e => {
+      var fontSize;
+      fontSize = 29 / scalingRatio;
+      console.log("offsetX", e.offsetX, e.offsetY);
+      var [newX, newY] = setTextLeftOrRight(e.offsetX, fontSize);
+      console.log("r", newX, newY, e.offsetX, e.offsetY);
+      // return undefined;
+      // var [newX, newY] = [e.offsetX, e.offsetY];
 
-        }
-        console.log("return");
+      // let lineIndex = 0;
+      // 32 tall in total
+      // let fontSize = (32/scalingRatio);
 
-        return [newX, newY];
-      }
+      // let fontSize = 19;
 
-      let name = userName;
-      let nameString = "Meet " + name;
-      let useTextColor = textColor.hex;
-      let useButtonColor = buttonColor.hex;
-      
-      const textToApply = (e) => {
-        var fontSize;
-        fontSize = (29/scalingRatio);
-        console.log("offsetX", e.offsetX, e.offsetY);
-        var [newX, newY] = setTextLeftOrRight(e.offsetX, fontSize);
-        console.log("r", newX, newY, e.offsetX, e.offsetY);
-        // return undefined;
-        // var [newX, newY] = [e.offsetX, e.offsetY];
+      // console.log(scalingRatio, "fontSize", fontSize);
+      ctx.fillStyle = useTextColor;
+      ctx.font = fontSize + "px RedHatDisplay";
+      ctx.fillText(nameString, newX, newY);
 
-        // let lineIndex = 0;
-        // 32 tall in total
-        // let fontSize = (32/scalingRatio);
-        
-        // let fontSize = 19;
+      // lineIndex 1 & 2 are 128 tall in total
+      // lineIndex = 1;
+      let linePosition = 64 / scalingRatio;
+      fontSize = 48 / scalingRatio;
+      ctx.font = "bold " + fontSize + "px RedHatDisplay";
+      ctx.fillText("They are earning", newX, newY + linePosition);
+      // lineIndex = 2;
+      linePosition = 64 / scalingRatio + linePosition;
+      ctx.fillText("5,000+% APY.", newX, newY + linePosition);
 
-        // console.log(scalingRatio, "fontSize", fontSize);
-        ctx.fillStyle = useTextColor;
-        ctx.font = fontSize+"px RedHatDisplay";
-        ctx.fillText(nameString, newX, newY);
+      // lineIndex 3 & 4 are 48 tall in total
+      // lineIndex = 3;
+      linePosition = 36 / scalingRatio + linePosition;
+      ctx.font = 21 / scalingRatio + "px RedHatDisplay";
+      ctx.fillText("When you’re ready, we’re ready with your", newX, newY + linePosition);
+      // lineIndex = 4;
+      linePosition = 26 / scalingRatio + linePosition;
+      ctx.fillText("Index account. Earn rewards every 8 hours.", newX, newY + linePosition);
 
-        // lineIndex 1 & 2 are 128 tall in total
-        // lineIndex = 1;
-        let linePosition = 64/scalingRatio;
-        fontSize = (48/scalingRatio);
-        ctx.font = "bold "+fontSize+"px RedHatDisplay";
-        ctx.fillText("They are earning", newX, newY+linePosition);
-        // lineIndex = 2;
-        linePosition = 64/scalingRatio + linePosition;
-        ctx.fillText("5,000+% APY.", newX, newY+linePosition);
+      ///////////////////////////// BUTTON /////////////////////////////
+      // button -> top left corner @ linePosition
+      linePosition = 31 / scalingRatio + linePosition;
+      // ctx.drawImage(button, newX, newY+linePosition)
+      let radius = 28 / scalingRatio;
+      let x = newX + radius;
+      let y = newY + linePosition + radius;
+      let length = 182 / scalingRatio;
 
-        // lineIndex 3 & 4 are 48 tall in total
-        // lineIndex = 3;
-        linePosition = 36/scalingRatio + linePosition;
-        ctx.font = (21/scalingRatio)+"px RedHatDisplay";
-        ctx.fillText("When you’re ready, we’re ready with your", newX, newY+linePosition);
-        // lineIndex = 4;
-        linePosition = 26/scalingRatio + linePosition;
-        ctx.fillText("Ohmie account. Earn rewards every 8 hours.", newX, newY+linePosition);
+      // left semi-circle
+      // ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise);
+      ctx.beginPath();
+      ctx.arc(x, y, radius, Math.PI / 2, (3 * Math.PI) / 2, false);
+      ctx.fill();
+      ctx.closePath();
 
-        ///////////////////////////// BUTTON /////////////////////////////
-        // button -> top left corner @ linePosition
-        linePosition = 31/scalingRatio + linePosition;
-        // ctx.drawImage(button, newX, newY+linePosition)
-        let radius = 28/scalingRatio;
-        let x = newX+radius;
-        let y = newY+linePosition+radius;
-        let length = 182/scalingRatio;
-        
-        // left semi-circle
-        // ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise);
-        ctx.beginPath();
-        ctx.arc(x, y, radius, (Math.PI/2), (3*Math.PI/2), false)
-        ctx.fill();
-        ctx.closePath();
+      // rect in middle
+      ctx.beginPath();
+      ctx.moveTo(x, y - radius);
+      ctx.fillRect(x, y - radius, length, radius * 2);
+      ctx.closePath();
 
-        // rect in middle
-        ctx.beginPath();
-        ctx.moveTo(x, y-radius);
-        ctx.fillRect(x, y-radius, length, radius*2);
-        ctx.closePath();
+      // rect in gaps
+      ctx.beginPath();
+      ctx.moveTo(x - 1, y - radius + 1);
+      ctx.fillRect(x - 1, y - radius + 1, 2, radius * 2 - 1);
+      ctx.closePath();
+      ctx.beginPath();
+      ctx.moveTo(x + length - 1, y - radius + 1);
+      ctx.fillRect(x + length - 1, y - radius + 1, 2, radius * 2 - 1);
+      ctx.closePath();
 
-        // rect in gaps
-        ctx.beginPath();
-        ctx.moveTo(x-1, y-radius+1);
-        ctx.fillRect(x-1, y-radius+1, 2, radius*2-1);
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.moveTo(x+length-1, y-radius+1);
-        ctx.fillRect(x+length-1, y-radius+1, 2, radius*2-1);
-        ctx.closePath();
-        
-        // right semi-circle
-        ctx.beginPath();
-        ctx.arc(x+length, y, radius, (Math.PI/2), (3*Math.PI/2), true)
-        ctx.fill();
-        ctx.closePath();
+      // right semi-circle
+      ctx.beginPath();
+      ctx.arc(x + length, y, radius, Math.PI / 2, (3 * Math.PI) / 2, true);
+      ctx.fill();
+      ctx.closePath();
 
-        // letters in button
-        ctx.fillStyle = useButtonColor;
-        ctx.font = 20/scalingRatio+"px RedHatDisplay";
-        ctx.fillText("olympusdao.finance", x, y+(6/scalingRatio));
-        ///////////////////////////// BUTTON /////////////////////////////
-        setLastTextEvent(e);
-      }
+      // letters in button
+      ctx.fillStyle = useButtonColor;
+      ctx.font = 20 / scalingRatio + "px RedHatDisplay";
+      ctx.fillText("index.coop", x, y + 6 / scalingRatio);
+      ///////////////////////////// BUTTON /////////////////////////////
+      setLastTextEvent(e);
+    };
 
-      // Add the event listeners for mousedown, mousemove, and mouseup
-      const handleMouseDown = () => {
-        console.log("down");
-        isDrawing = true;
-      }
-      // remove old listeners
-      canvasOnly.removeEventListener('mousedown', handleMouseDown);
-      canvasOnly.addEventListener('mousedown', handleMouseDown);
+    // Add the event listeners for mousedown, mousemove, and mouseup
+    const handleMouseDown = () => {
+      console.log("down");
+      isDrawing = true;
+    };
+    // remove old listeners
+    canvasOnly.removeEventListener("mousedown", handleMouseDown);
+    canvasOnly.addEventListener("mousedown", handleMouseDown);
 
-      const handleMouseMove = (e) => {
-        if (isDrawing === true) {
-
-          if (croppedBg) history.restoreState();
-          textToApply(e);
-          // ctx.drawImage(logo, (e.offsetX-(stampSize.width/2)), (e.offsetY-(stampSize.height/2)), stampSize.width, stampSize.height);
-
-        }
-      }
-
-      // drawImage usage
-      // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
-      canvasOnly.removeEventListener('mousemove', handleMouseMove);
-      canvasOnly.addEventListener('mousemove', handleMouseMove);
-
-      const handleMouseUp = e => {
-        if (isDrawing === true) {
-
-          if (croppedBg) history.restoreState();
-
-          textToApply(e);
-
-          isDrawing = false;
-        }
-      }
-      canvasOnly.removeEventListener('mouseup', handleMouseUp);
-      canvasOnly.addEventListener('mouseup', handleMouseUp);
-
-      // setTextListenersApplied(true);
-      if (lastTextEvent) {
+    const handleMouseMove = e => {
+      if (isDrawing === true) {
         if (croppedBg) history.restoreState();
-        textToApply(lastTextEvent);
+        textToApply(e);
+        // ctx.drawImage(logo, (e.offsetX-(stampSize.width/2)), (e.offsetY-(stampSize.height/2)), stampSize.width, stampSize.height);
       }
-    }, [croppedBg, userName, textColor, buttonColor, lastTextEvent]
-  );
-    
-  const step1Direction = {row: ""};
+    };
+
+    // drawImage usage
+    // https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+    canvasOnly.removeEventListener("mousemove", handleMouseMove);
+    canvasOnly.addEventListener("mousemove", handleMouseMove);
+
+    const handleMouseUp = e => {
+      if (isDrawing === true) {
+        if (croppedBg) history.restoreState();
+
+        textToApply(e);
+
+        isDrawing = false;
+      }
+    };
+    canvasOnly.removeEventListener("mouseup", handleMouseUp);
+    canvasOnly.addEventListener("mouseup", handleMouseUp);
+
+    // setTextListenersApplied(true);
+    if (lastTextEvent) {
+      if (croppedBg) history.restoreState();
+      textToApply(lastTextEvent);
+    }
+  }, [croppedBg, userName, textColor, buttonColor, lastTextEvent]);
+
+  const step1Direction = { row: "" };
   // const [secondaryDirection, setSecondaryDirection] = useState({row: ""});
-  
+
   // uiSteps
   // 1. Click to start
   // 2. take user's image to cropper
@@ -438,44 +432,44 @@ function CompositorV3(props) {
   // 4. Text setting
   // 5. download
 
-  const goToBgStep = (image) => {
+  const goToBgStep = image => {
     if (image) setfileImage(image);
     // setTextPromptState("Start Over");
     setIsLoading(true);
     canvasOrdering("bg");
     setuiStep("bg");
-  }
+  };
 
-  const canvasOrdering = (stepNumber) => {
+  const canvasOrdering = stepNumber => {
     switch (stepNumber) {
       case "bg":
-        bgCanvasRef.current.style.zIndex=1;
-        pfpCanvasRef.current.style.zIndex=0;
-        textCanvasRef.current.style.zIndex=-1;
+        bgCanvasRef.current.style.zIndex = 1;
+        pfpCanvasRef.current.style.zIndex = 0;
+        textCanvasRef.current.style.zIndex = -1;
         canvasContainerRef.current.style.display = "none";
         break;
       case "pfp":
-        pfpCanvasRef.current.style.zIndex=1;
-        textCanvasRef.current.style.zIndex=0;
-        bgCanvasRef.current.style.zIndex=-1;
+        pfpCanvasRef.current.style.zIndex = 1;
+        textCanvasRef.current.style.zIndex = 0;
+        bgCanvasRef.current.style.zIndex = -1;
         canvasContainerRef.current.style.display = "block";
         break;
       case "long-press":
       case "text":
-        textCanvasRef.current.style.zIndex=1;
-        pfpCanvasRef.current.style.zIndex=0;
-        bgCanvasRef.current.style.zIndex=-1;
+        textCanvasRef.current.style.zIndex = 1;
+        pfpCanvasRef.current.style.zIndex = 0;
+        bgCanvasRef.current.style.zIndex = -1;
         canvasContainerRef.current.style.display = "block";
         break;
       default:
-        textCanvasRef.current.style.zIndex=1;
-        pfpCanvasRef.current.style.zIndex=0;
-        bgCanvasRef.current.style.zIndex=-1;
+        textCanvasRef.current.style.zIndex = 1;
+        pfpCanvasRef.current.style.zIndex = 0;
+        bgCanvasRef.current.style.zIndex = -1;
         canvasContainerRef.current.style.display = "block";
     }
-  }
+  };
 
-  const goToPfpStep = (sameCanvas) => {
+  const goToPfpStep = sameCanvas => {
     // which canvas should be shown?
     // pfpCanvas on top textCanvas on top of BgCanvas
     canvasOrdering("pfp");
@@ -486,27 +480,27 @@ function CompositorV3(props) {
       drawCroppedCanvas();
     }
     setuiStep("pfp");
-  }
+  };
 
   const goToTextStep = () => {
     setDPI(textCanvasRef, "text");
     // applyTextListeners();
     canvasOrdering("text");
     setuiStep("text");
-  }
+  };
 
   // this only happens for iOSMobile, non-Safari users
   const goToLongPress = () => {
     // must set display.none rather than height 0
     // height 0 doesn't allow the image to be created...
-    bgCanvasRef.current.style.display="none";
-    pfpCanvasRef.current.style.display="none";
-    textCanvasRef.current.style.display="none";
-    finalCanvasRef.current.style.display="none";
+    bgCanvasRef.current.style.display = "none";
+    pfpCanvasRef.current.style.display = "none";
+    textCanvasRef.current.style.display = "none";
+    finalCanvasRef.current.style.display = "none";
     canvasContainerRef.current.style.height = 0;
     canvasOrdering("long-press");
     setuiStep("long-press");
-  }
+  };
 
   const goBackOneStep = () => {
     if (uiStep === "text") {
@@ -520,21 +514,21 @@ function CompositorV3(props) {
       setuiStep(1);
     } else if (uiStep === "long-press") {
       // make the canvas show again
-      bgCanvasRef.current.style.display="block";
-      pfpCanvasRef.current.style.display="block";
-      textCanvasRef.current.style.display="block";
-      finalCanvasRef.current.style.display="block";
+      bgCanvasRef.current.style.display = "block";
+      pfpCanvasRef.current.style.display = "block";
+      textCanvasRef.current.style.display = "block";
+      finalCanvasRef.current.style.display = "block";
       canvasContainerRef.current.style.height = croppedBg.governing_height + "px";
       // goToStepThree(true);
       goToTextStep();
     }
-  }
+  };
 
   // STEP 1
   // dropzone handling
-  const {getRootProps, getInputProps} = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     // heic/heif images aren't allowable...
-    accept: 'image/*',
+    accept: "image/*",
     multiple: false,
     onDrop: acceptedFiles => {
       // console.log(acceptedFiles);
@@ -570,27 +564,24 @@ function CompositorV3(props) {
             maxHt = 1024;
           }
           mobile = true;
-
         }
         image = classifyImage(image, maxWdth, maxHt, mobile);
         goToBgStep(image);
-
       };
       image.src = previewUrl;
-    }
+    },
   });
 
   // react-cropper
   const cropperRef = React.useRef(null);
   const cropperContainerRef = React.useRef(null);
-  
+
   // PIXELATED logo issue:
   // Canvases have two different 'sizes': their DOM width/height and their CSS width/height...
   // You can increase a canvas' resolution by increasing the DOM size while keeping the CSS size...
   // fixed, and then using the .scale() method to scale all of your future draws to the new bigger size.
   // https://stackoverflow.com/questions/14488849/higher-dpi-graphics-with-html5-canvas/26047748
-  const drawCroppedCanvas = useCallback( () => {
-
+  const drawCroppedCanvas = useCallback(() => {
     // set all Canvases to the backgrounds SIZE
     const setCanvasDims = () => {
       // set container height
@@ -600,7 +591,7 @@ function CompositorV3(props) {
       bgCanvasRef.current.style.width = croppedBg.governing_width + "px";
       bgCanvasRef.current.height = croppedBg.governing_height;
       bgCanvasRef.current.width = croppedBg.governing_width;
-      
+
       // set other canvas heights
       pfpCanvasRef.current.style.height = bgCanvasRef.current.style.height;
       pfpCanvasRef.current.style.width = bgCanvasRef.current.style.width;
@@ -617,8 +608,7 @@ function CompositorV3(props) {
       finalCanvasRef.current.style.width = croppedBg.width + "px";
       finalCanvasRef.current.height = bgCanvasRef.current.height;
       finalCanvasRef.current.width = bgCanvasRef.current.width;
-
-    }
+    };
 
     if (croppedBg) {
       // console.log('drawCroppedCanvas', image);
@@ -630,14 +620,13 @@ function CompositorV3(props) {
       setCanvasDims();
 
       setDPI(bgCanvasRef, false);
-      var ctx = bgCanvasRef.current.getContext('2d');
+      var ctx = bgCanvasRef.current.getContext("2d");
       ctx.drawImage(croppedBg, 0, 0, croppedBg.governing_width, croppedBg.governing_height);
       setDPI(pfpCanvasRef, false);
       setDPI(textCanvasRef, false);
       setDPI(finalCanvasRef, false);
       setCanvasListeners();
     }
-    
   }, [setCanvasListeners, croppedBg]);
 
   // TODO (appleseed):
@@ -656,10 +645,10 @@ function CompositorV3(props) {
     } else {
       scaleFactor = 3;
     }
-    
+
     // Set up CSS size.
-    thisCanvas.style.width = bgCanvas.style.width || bgCanvas.width + 'px';
-    thisCanvas.style.height = bgCanvas.style.height || bgCanvas.height + 'px';
+    thisCanvas.style.width = bgCanvas.style.width || bgCanvas.width + "px";
+    thisCanvas.style.height = bgCanvas.style.height || bgCanvas.height + "px";
 
     // console.log('setDpi', canvas.style.width, canvas.style.height);
     // Get size information.
@@ -670,10 +659,10 @@ function CompositorV3(props) {
     var oldScale = thisCanvas.width / width;
     var backupScale = scaleFactor / oldScale;
     var backup = thisCanvas.cloneNode(false);
-    backup.getContext('2d').drawImage(thisCanvas, 0, 0);
+    backup.getContext("2d").drawImage(thisCanvas, 0, 0);
 
     // Resize the canvas.
-    var ctx = thisCanvas.getContext('2d');
+    var ctx = thisCanvas.getContext("2d");
     thisCanvas.width = Math.ceil(width * scaleFactor);
     thisCanvas.height = Math.ceil(height * scaleFactor);
 
@@ -681,24 +670,24 @@ function CompositorV3(props) {
     ctx.setTransform(backupScale, 0, 0, backupScale, 0, 0);
     ctx.drawImage(backup, 0, 0);
     ctx.setTransform(scaleFactor, 0, 0, scaleFactor, 0, 0);
-  };
+  }
 
-  const resizeAndExport = (preview) => {
+  const resizeAndExport = preview => {
     var thisCanvas = finalCanvasRef.current;
     if (thisCanvas.width !== fixedWidth) {
       var backup = thisCanvas.cloneNode(false);
-      backup.getContext('2d').drawImage(thisCanvas, 0, 0);
+      backup.getContext("2d").drawImage(thisCanvas, 0, 0);
 
       if (preview) {
         thisCanvas.width = croppedBg.governing_width;
         thisCanvas.height = croppedBg.governing_height;
-  
-        thisCanvas.getContext('2d').drawImage(backup, 0,0, croppedBg.governing_width, croppedBg.governing_height);  
+
+        thisCanvas.getContext("2d").drawImage(backup, 0, 0, croppedBg.governing_width, croppedBg.governing_height);
       } else {
         thisCanvas.width = fixedWidth;
         thisCanvas.height = fixedHeight;
-  
-        thisCanvas.getContext('2d').drawImage(backup, 0,0, backup.width, backup.height, 0, 0, fixedWidth, fixedHeight);  
+
+        thisCanvas.getContext("2d").drawImage(backup, 0, 0, backup.width, backup.height, 0, 0, fixedWidth, fixedHeight);
       }
     }
   };
@@ -707,7 +696,7 @@ function CompositorV3(props) {
   // or maybe multiple?
   const clearTheCanvas = () => {
     // var canvas = canvasRef.current;
-    var ctx = bgCanvasRef.current.getContext('2d');
+    var ctx = bgCanvasRef.current.getContext("2d");
     if (croppedBg) ctx.clearRect(0, 0, croppedBg.governing_width, croppedBg.governing_height);
     bgCanvasRef.current.height = 0;
     bgCanvasRef.current.style.height = 0;
@@ -718,7 +707,7 @@ function CompositorV3(props) {
     var y = event.layerY;
     var pixel = finalCanvasRef.current.getContext("2d").getImageData(x, y, 1, 1);
     var data = pixel.data;
-  
+
     // const rgba = `rgba(${data[0]}, ${data[1]}, ${data[2]}, ${data[3] / 255})`;
     // destination.style.background = rgba;
     // destination.textContent = rgba;
@@ -727,12 +716,12 @@ function CompositorV3(props) {
     // console.log(hex);
     const colorHash = {
       hex: hex,
-      rgb: {r: data[0], g: data[1], b: data[2], a: 100},
-    }
+      rgb: { r: data[0], g: data[1], b: data[2], a: 100 },
+    };
     return colorHash;
-  };
+  }
 
-  const getCanvasColor = (e) => {
+  const getCanvasColor = e => {
     // console.log("mouse", e);
     finalCanvasRef.current.style.zIndex = -3;
     var colorHash = pick(e);
@@ -745,43 +734,43 @@ function CompositorV3(props) {
    * through the eventListener properly
    */
   /**
-   * 
-   * @param {*} e 
+   *
+   * @param {*} e
    * @param {String} whichColor "text", "button", or "background", denoting which color we are picking for
    */
-  const textMouseUp = (e) => {
+  const textMouseUp = e => {
     var colorHash = getCanvasColor(e);
-    finalCanvasRef.current.removeEventListener('mouseup', textMouseUp);
+    finalCanvasRef.current.removeEventListener("mouseup", textMouseUp);
     setTextColor(colorHash);
   };
 
   /**
-   * 
-   * @param {*} e 
+   *
+   * @param {*} e
    * @param {String} whichColor "text", "button", or "background", denoting which color we are picking for
    */
-  const buttonMouseUp = (e) => {
+  const buttonMouseUp = e => {
     var colorHash = getCanvasColor(e);
-    finalCanvasRef.current.removeEventListener('mouseup', buttonMouseUp);
+    finalCanvasRef.current.removeEventListener("mouseup", buttonMouseUp);
     setButtonColor(colorHash);
   };
 
   /**
-   * 
-   * @param {*} e 
+   *
+   * @param {*} e
    * @param {String} whichColor "text", "button", or "background", denoting which color we are picking for
    */
-  const backgroundMouseUp = (e) => {
+  const backgroundMouseUp = e => {
     var colorHash = getCanvasColor(e);
-    finalCanvasRef.current.removeEventListener('mouseup', backgroundMouseUp);
-    setBackgroundColor({fill: true, color: colorHash});
+    finalCanvasRef.current.removeEventListener("mouseup", backgroundMouseUp);
+    setBackgroundColor({ fill: true, color: colorHash });
   };
 
   /**
-   * 
+   *
    * @param {String} whichColor "text", "button", or "background", denoting which color we are picking for
    */
-  const previewFinalCanvas = (whichColor) => {
+  const previewFinalCanvas = whichColor => {
     // 1A. draw pickerCanvas (background + pfp) set z-index = 2
     // 1B. set cursor: "crosshair"
     // 2. addEventListener "click" (to picker canvas)
@@ -800,24 +789,24 @@ function CompositorV3(props) {
     // console.log(whichColor);
     switch (whichColor) {
       case "text":
-        finalCanvasRef.current.addEventListener('mouseup', textMouseUp);
+        finalCanvasRef.current.addEventListener("mouseup", textMouseUp);
         break;
       case "button":
-        finalCanvasRef.current.addEventListener('mouseup', buttonMouseUp);
+        finalCanvasRef.current.addEventListener("mouseup", buttonMouseUp);
         break;
       case "background":
-        finalCanvasRef.current.addEventListener('mouseup', backgroundMouseUp);
+        finalCanvasRef.current.addEventListener("mouseup", backgroundMouseUp);
         break;
       default:
         console.warn("You MUST pass a whichColor param");
     }
-  }
+  };
 
   /**
-   * 
+   *
    * @param {bool} preview is optional
    */
-  const drawFinalCanvas = (preview) => {
+  const drawFinalCanvas = preview => {
     var dpiType = "final";
     // if (preview) dpiType = "preview";
     setDPI(finalCanvasRef, dpiType);
@@ -833,8 +822,8 @@ function CompositorV3(props) {
     // ctx.drawImage(pfpCanvasRef.current, 0, 0, croppedBg.governing_width/scaleFactor, croppedBg.governing_height/scaleFactor);
     // // draw Text
     // ctx.drawImage(textCanvasRef.current, 0, 0, croppedBg.governing_width/scaleFactor, croppedBg.governing_height/scaleFactor);
-    
-    var ctx = finalCanvasRef.current.getContext('2d');
+
+    var ctx = finalCanvasRef.current.getContext("2d");
     ctx.drawImage(bgCanvasRef.current, 0, 0, croppedBg.governing_width, croppedBg.governing_height);
     ctx.drawImage(pfpCanvasRef.current, 0, 0, croppedBg.governing_width, croppedBg.governing_height);
     // draw Text
@@ -860,13 +849,17 @@ function CompositorV3(props) {
       // polyfill for browsers...
       // using blueimp-canvas-to-blob
       if (finalCanvasRef.current.toBlob) {
-        finalCanvasRef.current.toBlob(function (blob) {
-          const anchor = document.createElement('a');
-          anchor.download = "ohmie-card"; // optional, but you can give the file a name
-          anchor.href = URL.createObjectURL(blob);
-          anchor.click();
-          URL.revokeObjectURL(anchor.href); // remove it from memory
-        }, fileImageType, 1);
+        finalCanvasRef.current.toBlob(
+          function (blob) {
+            const anchor = document.createElement("a");
+            anchor.download = "index-card"; // optional, but you can give the file a name
+            anchor.href = URL.createObjectURL(blob);
+            anchor.click();
+            URL.revokeObjectURL(anchor.href); // remove it from memory
+          },
+          fileImageType,
+          1
+        );
       }
     }
   };
@@ -885,7 +878,7 @@ function CompositorV3(props) {
     // needs to run when stampSize changes
     if (backgroundColor.fill === true) {
       // console.log(backgroundColor);
-      var ctx = bgCanvasRef.current.getContext('2d')
+      var ctx = bgCanvasRef.current.getContext("2d");
       ctx.fillStyle = backgroundColor.color.hex;
       ctx.rect(0, 0, bgCanvasRef.current.width, bgCanvasRef.current.height);
       ctx.fill();
@@ -907,34 +900,38 @@ function CompositorV3(props) {
             </div>
           </Grid>
         </Grid>
-        
-        {/* working on loader */}
-        {isLoading &&
-          <CircularProgress />
-        }
 
-        {uiStep === 1 &&
+        {/* working on loader */}
+        {isLoading && <CircularProgress />}
+
+        {uiStep === 1 && (
           <div className="dropContainer" style={dropContainerStyle}>
-            <div {...getRootProps({style: dropZoneReg})}>
+            <div {...getRootProps({ style: dropZoneReg })}>
               <input {...getInputProps()} />
-              <div  style={{flexGrow: "1", display: "flex", alignItems: "center"}}>
-                <Typography variant="h5" color="textSecondary">Upload your background. Click to Start.</Typography>
+              <div style={{ flexGrow: "1", display: "flex", alignItems: "center" }}>
+                <Typography variant="h5" color="textSecondary">
+                  Upload your background. Click to Start.
+                </Typography>
               </div>
-              
-              <div style={{flexGrow: "0"}}>
-                <div style={{display: "flex", flexFlow: "column wrap"}}>
-                  <Typography variant="body1" style={{fontFamily: "RedHatDisplay", marginTop: "0.25rem"}}>Optimal Aspect Ratio: {fixedWidth}/{fixedHeight} (width/height).</Typography>
-                  <Typography variant="body1" style={{fontFamily: "RedHatDisplay", margin: "0.1rem"}}>Don't worry, fren. You can crop on next step.</Typography>
+
+              <div style={{ flexGrow: "0" }}>
+                <div style={{ display: "flex", flexFlow: "column wrap" }}>
+                  <Typography variant="body1" style={{ fontFamily: "RedHatDisplay", marginTop: "0.25rem" }}>
+                    Optimal Aspect Ratio: {fixedWidth}/{fixedHeight} (width/height).
+                  </Typography>
+                  <Typography variant="body1" style={{ fontFamily: "RedHatDisplay", margin: "0.1rem" }}>
+                    Don't worry, fren. You can crop on next step.
+                  </Typography>
                 </div>
               </div>
             </div>
           </div>
-        }
+        )}
 
         {/* Background Cropper */}
-        {uiStep === "bg" && fileImage &&
+        {uiStep === "bg" && fileImage && (
           <BgCanvas
-            ref={{cropperRef: cropperRef, cropperContainerRef: cropperContainerRef}}
+            ref={{ cropperRef: cropperRef, cropperContainerRef: cropperContainerRef }}
             imageLoaded={imageLoaded}
             setCroppedBg={setCroppedBg}
             goBackOneStep={goBackOneStep}
@@ -945,24 +942,24 @@ function CompositorV3(props) {
             areaHt={areaHt}
             fileImageType={fileImageType}
             containerStyle={dropContainerStyle}
-            aspectRatio={fixedWidth/fixedHeight}
+            aspectRatio={fixedWidth / fixedHeight}
           />
-        }
+        )}
 
         {/* Logo Resizing */}
-        {uiStep === "pfp" &&
+        {uiStep === "pfp" && (
           <PfpCanvas
-            ref={{stampInputRef: stampInputRef}}
+            ref={{ stampInputRef: stampInputRef }}
             setStampSize={setStampSize}
             setStampFile={setStampFile}
             stampFile={stampFile}
             stampSize={stampSize}
-            maxHt = {parseFloat(bgCanvasRef.current.style.height)}
+            maxHt={parseFloat(bgCanvasRef.current.style.height)}
           />
-        }
+        )}
 
         {/* Logo Resizing */}
-        {uiStep === "text" &&
+        {uiStep === "text" && (
           <TextCanvas
             setUserName={setUserName}
             // applyTextListeners={applyTextListeners}
@@ -974,70 +971,53 @@ function CompositorV3(props) {
             setBackgroundColor={setBackgroundColor}
             previewFinalCanvas={previewFinalCanvas}
           />
-        }
+        )}
 
-        {/* Image Resizer was here... but didn't look right */}  
+        {/* Image Resizer was here... but didn't look right */}
         {/* 
           Notes for below (Step 3): 
           1. canvas must ALWAYS be on screen
           2. when we don't want the CroppedCanvas to appear we change height to 0
         */}
         <Box style={canvasContainer} ref={canvasContainerRef}>
-          <canvas
-            id="bgCanvas"
-            ref={bgCanvasRef}
-            style={canvasStyle}
-            height="0"
-          ></canvas>
-          <canvas
-            id="pfpCanvas"
-            ref={pfpCanvasRef}
-            style={canvasStyle}
-            height="0"
-          ></canvas>
-          <canvas
-            id="textCanvas"
-            ref={textCanvasRef}
-            style={canvasStyle}
-            height="0"
-          ></canvas>
-          <canvas
-            id="canvas"
-            ref={finalCanvasRef}
-            style={canvasStyle}
-            height="0"
-          ></canvas>
+          <canvas id="bgCanvas" ref={bgCanvasRef} style={canvasStyle} height="0"></canvas>
+          <canvas id="pfpCanvas" ref={pfpCanvasRef} style={canvasStyle} height="0"></canvas>
+          <canvas id="textCanvas" ref={textCanvasRef} style={canvasStyle} height="0"></canvas>
+          <canvas id="canvas" ref={finalCanvasRef} style={canvasStyle} height="0"></canvas>
         </Box>
-        {uiStep === "pfp" && croppedBg &&
-          <Box textAlign='center'>
+        {uiStep === "pfp" && croppedBg && (
+          <Box textAlign="center">
             <Button variant="outlined" color="primary" onClick={goBackOneStep} style={outlineButton}>
               Back
             </Button>
             <Button variant="contained" color="primary" onClick={goToTextStep} style={containerButton}>
               Next
             </Button>
-            <div style={{flexGrow: "0"}}>
-                <div style={{display: "flex", flexFlow: "column wrap"}}>
-                  <Typography variant="body1" style={{fontFamily: "RedHatDisplay", marginTop: "0.25rem"}}>Don't like your background?</Typography>
-                  <Typography variant="body1" style={{fontFamily: "RedHatDisplay", margin: "0.1rem"}}>Don't worry, fren. You can bucket fill it on next step.</Typography>
-                </div>
+            <div style={{ flexGrow: "0" }}>
+              <div style={{ display: "flex", flexFlow: "column wrap" }}>
+                <Typography variant="body1" style={{ fontFamily: "RedHatDisplay", marginTop: "0.25rem" }}>
+                  Don't like your background?
+                </Typography>
+                <Typography variant="body1" style={{ fontFamily: "RedHatDisplay", margin: "0.1rem" }}>
+                  Don't worry, fren. You can bucket fill it on next step.
+                </Typography>
               </div>
+            </div>
           </Box>
-          
-        }
+        )}
 
-        {uiStep === "text" && 
-          <Box textAlign='center'>
+        {uiStep === "text" && (
+          <Box textAlign="center">
             <Button variant="outlined" color="primary" onClick={goBackOneStep} style={outlineButton}>
               Back
             </Button>
             <Button variant="contained" color="primary" onClick={downloadImage} style={containerButton}>
-              Download Ohmie Card
+              Download Index Card
             </Button>
           </Box>
-        }
+        )}
 
-        {uiStep === "long-press" &&
+        {uiStep === "long-press" && (
           <div>
             <img
               alt="finalImage"
@@ -1047,16 +1027,16 @@ function CompositorV3(props) {
                 width: finalCanvasRef.current.style.width,
               }}
             />
-            <Box textAlign='center' style={{marginTop: "-0.13rem"}}>
+            <Box textAlign="center" style={{ marginTop: "-0.13rem" }}>
               <Button variant="outlined" color="primary" onClick={goBackOneStep} style={outlineButton}>
                 Back
               </Button>
               <Button variant="contained" color="primary" onClick={downloadImage} style={hiddenButton}>
-              Download Ohmie Card
+                Download Index Card
               </Button>
             </Box>
           </div>
-        }
+        )}
       </Paper>
     </Zoom>
   );

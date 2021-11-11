@@ -20,10 +20,10 @@ function classifyImage(image, parentWidth, parentHeight, mobile) {
   var image_height = image.height;
   var image_width = image.width;
   console.log(image_width, image_height);
-  image.aspectRatio = (image_width/image_height);
+  image.aspectRatio = image_width / image_height;
 
   // if image_width & image_height are each less than parent
-  // if image_width 
+  // if image_width
   if (portrait === true) {
     // PORTRAIT --- OR ---- SQUARE
     // then height is the governing factor...
@@ -38,7 +38,6 @@ function classifyImage(image, parentWidth, parentHeight, mobile) {
         // console.log('too wide');
         widthGoverning();
       }
-      
     } else {
       // aspectRatio = w/h = new_width/new_height
       // new_width = new_height * aspect_ratio
@@ -89,13 +88,13 @@ function classifyImage(image, parentWidth, parentHeight, mobile) {
   function heightGoverning() {
     // console.log('heightGoverning');
     image.governing_height = parentHeight;
-    image.governing_width = (parentHeight * image.aspectRatio);
+    image.governing_width = parentHeight * image.aspectRatio;
   }
 
   function widthGoverning() {
     // console.log('widthGoverning');
     image.governing_width = parentWidth;
-    image.governing_height = (parentWidth / image.aspectRatio);
+    image.governing_height = parentWidth / image.aspectRatio;
   }
 
   return image;
@@ -104,12 +103,12 @@ function classifyImage(image, parentWidth, parentHeight, mobile) {
 /**
  * stretches image to fit our desired view port
  */
-export const classifyOhmieImage = (image, parentWidth, parentHeight) => {
+export const classifyIndexImage = (image, parentWidth, parentHeight) => {
   image.aspectRatio = parentWidth / parentHeight;
   image.governing_width = parentWidth;
   image.governing_height = parentHeight;
 
   return image;
-}
+};
 
 export default classifyImage;

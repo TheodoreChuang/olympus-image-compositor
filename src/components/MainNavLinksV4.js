@@ -1,8 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Zoom,
-} from "@material-ui/core";
+import { Box, Zoom } from "@material-ui/core";
 
 import WelcomeHeadline from "./WelcomeHeadline";
 import BoxHomepage from "./BoxHomepage";
@@ -16,7 +13,7 @@ import BoxHomepage from "./BoxHomepage";
 function MainNavLinksV4() {
   return (
     <Box>
-      <WelcomeHeadline headline={"Welcome Ohmie"} subText={"Select an Option"}/>
+      <WelcomeHeadline headline={"Welcome Index"} subText={"Select an Option"} />
       <Zoom in={true}>
         <BoxHomepage />
       </Zoom>

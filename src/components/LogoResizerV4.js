@@ -1,29 +1,38 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import {
-  Box,
-  Typography,
-  Button
-} from "@material-ui/core";
+import { Box, Typography, Button } from "@material-ui/core";
 
 import CloudUploadIcon from "./CloudUploadIcon";
 
-import SizeSlider from './SizeSlider';
+import SizeSlider from "./SizeSlider";
 
 function LogoResizer(props) {
-
   return (
-    <Box style={props.medScreen ? (
-      {marginLeft: "1rem", marginRight: "1rem", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "space-around", height: props.containerHeight}
-    ): (
-      {display: "flex", flexDirection: "column", alignItems: "center"}
-    )}>
+    <Box
+      style={
+        props.medScreen
+          ? {
+              marginLeft: "1rem",
+              marginRight: "1rem",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "space-around",
+              height: props.containerHeight,
+            }
+          : { display: "flex", flexDirection: "column", alignItems: "center" }
+      }
+    >
       {/* TODO (appleseed): do you want click to replace option on POF? */}
-      <Typography className={props.isPfp ? ("direction-text pfp-dt") : ("direction-text pof-dt")} >{props.directionText}</Typography>
+      <Typography className={props.isPfp ? "direction-text pfp-dt" : "direction-text pof-dt"}>
+        {props.directionText}
+      </Typography>
       {props.isPfp ? (
         <Box className="pfp-mask pfp-box" display="flex" onClick={props.onStampClick}>
-          <Box style={{position: "absolute"}}><CloudUploadIcon viewBox="0 0 102 48"/></Box>
+          <Box style={{ position: "absolute" }}>
+            <CloudUploadIcon viewBox="0 0 102 48" />
+          </Box>
           <img
             src={props.stampSrc}
             height={props.stampHeight}
@@ -52,25 +61,14 @@ function LogoResizer(props) {
         onChange={props.resizeStamp}
       />
       {/*showCanvas && */}
-      <Box display="flex" style={props.buttonsContainerStyle} textAlign='center'>
-        
-        <Box style={{marginBottom: "1rem"}}>
-          <Button
-            id="download-pfp-button"
-            variant="contained"
-            className="ohmie-button"
-            onClick={props.downloadImage}
-          >
+      <Box display="flex" style={props.buttonsContainerStyle} textAlign="center">
+        <Box style={{ marginBottom: "1rem" }}>
+          <Button id="download-pfp-button" variant="contained" className="index-button" onClick={props.downloadImage}>
             <Typography className="btn-text">{props.downloadText}</Typography>
           </Button>
         </Box>
         <Box>
-          <Button
-            id="back-button"
-            variant="outlined"
-            className="outlined-ohmie-button"
-            onClick={props.goBackToStart}
-          >
+          <Button id="back-button" variant="outlined" className="outlined-index-button" onClick={props.goBackToStart}>
             <Typography className="btn-text">Start Over</Typography>
           </Button>
         </Box>

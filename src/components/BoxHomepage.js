@@ -26,7 +26,7 @@ function BoxHomepage() {
     justifyContent: "space-between",
     // width: "333px",
     // height: "217px",
-  }
+  };
 
   const pofTextStyle = {
     // position: "absolute",
@@ -72,36 +72,42 @@ function BoxHomepage() {
   };
 
   /**
-   * @param {String} toPath should be "/pof" or "/ohmiecard"
+   * @param {String} toPath should be "/pof" or "/indexcard"
    */
-  const clickCardTrigger = (toPath) => {
+  const clickCardTrigger = toPath => {
     setFadeTransition(false);
     setTimeout(() => {
       // setFadeTransition(true);
       history.push(toPath);
-    }, fadeOutMs*0.75);
+    }, fadeOutMs * 0.75);
   };
 
   return (
     <Box display="flex" justifyContent="center" style={containerStyle}>
-      <Fade in={fadeTransition} timeout={{enter: 333, exit: fadeOutMs}}>
+      <Fade in={fadeTransition} timeout={{ enter: 333, exit: fadeOutMs }}>
         <Box id="content-1" display="flex" gap="6px">
           {/* 
             Card Box (below)
             // TODO: should have click handlers & hover
           */}
-          <Box id="pof-card-trigger" className="homepage-box-trigger module-border-wrap" onClick={() => {clickCardTrigger("/pof")}}>
+          <Box
+            id="pof-card-trigger"
+            className="homepage-box-trigger module-border-wrap"
+            onClick={() => {
+              clickCardTrigger("/pof");
+            }}
+          >
             <Box display="flex" alignItems="center" className="module">
               <Box className="rectangle-1-backdrop card-nav">
                 <Box style={textContainerStyles}>
-                  <Typography style={pofTextStyle}>Proof of Ohmie</Typography>
+                  <Typography style={pofTextStyle}>Proof of Index</Typography>
                   <Typography style={stakedTextStyle}>Show everyone that you're staked (3,3).</Typography>
                   <Button
                     id="create-pfp-trigger-button"
                     variant="contained"
                     // color="primary"
                     // onClick={handleCompleteAward}
-                    className="ohmie-button"
+                    className="index-button"
                   >
                     <Typography className="btn-text">Create PFP</Typography>
                   </Button>
@@ -115,18 +121,24 @@ function BoxHomepage() {
             Card Box (below)
             // TODO: should have click handlers & hover
           */}
-          <Box id="ohmie-card-trigger" className="homepage-box-trigger module-border-wrap" onClick={() => {clickCardTrigger("/ohmiecard")}}>
+          <Box
+            id="index-card-trigger"
+            className="homepage-box-trigger module-border-wrap"
+            onClick={() => {
+              clickCardTrigger("/indexcard");
+            }}
+          >
             <Box display="flex" alignItems="center" className="module">
               <Box className="rectangle-1-backdrop card-nav">
                 <Box style={textContainerStyles}>
-                  <Typography style={pofTextStyle}>Ohmie Card</Typography>
+                  <Typography style={pofTextStyle}>Index Card</Typography>
                   <Typography style={stakedTextStyle}>Personalized card just to show off your gains.</Typography>
                   <Button
                     id="pool-complete-award-button"
                     variant="contained"
                     // color="primary"
                     // onClick={handleCompleteAward}
-                    className="ohmie-button"
+                    className="index-button"
                   >
                     <Typography className="btn-text">Create Card</Typography>
                   </Button>
@@ -138,7 +150,7 @@ function BoxHomepage() {
         </Box>
       </Fade>
     </Box>
-  )
+  );
 }
 
 export default BoxHomepage;
