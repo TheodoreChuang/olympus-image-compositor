@@ -861,7 +861,9 @@ function IndexCardV4(props) {
   };
 
   useEffect(() => {
-    skipBgStep();
+    if (uiStep !== "pfp") {
+      skipBgStep();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [skipBgStep]);
 
