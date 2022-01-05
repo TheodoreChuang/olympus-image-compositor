@@ -384,9 +384,11 @@ function IndexCardV4(props) {
         // lineIndex = 3;
         linePosition = 120 / scalingRatio + linePosition;
         ctx.font = "normal " + 70 / scalingRatio + "px IBMPlexSans";
-        ctx.fillText(`${userName} is GMI`, newX, newY + linePosition);
-        // ctx.font = "bold " + 50 / scalingRatio + "px IBMPlexSans";
-        // ctx.fillText(`GMI`, `${newX + 100}`, newY + linePosition);
+        ctx.fillText(`${userName} is `, newX - 50, newY + linePosition);
+        ctx.font = "bold " + 70 / scalingRatio + "px IBMPlexSans";
+        ctx.fillStyle = "red";
+        ctx.fillText(`GMI`, newX, newY + linePosition);
+        ctx.fillStyle = useTextColor;
 
         // lineIndex = 4;
         linePosition = 120 / scalingRatio + linePosition;
