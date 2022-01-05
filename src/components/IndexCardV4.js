@@ -199,7 +199,7 @@ function IndexCardV4(props) {
     hex: "#FFFFFF",
     rgb: { r: 255, g: 255, b: 255, a: 100 },
   });
-  const [currentAPY, setCurrentAPY] = useState("5,000");
+  // const [currentAPY, setCurrentAPY] = useState("5,000");
 
   /**
    * backgroundColor has two keys, denoted as params below
@@ -441,7 +441,7 @@ function IndexCardV4(props) {
       textToApply(leftRight);
       console.log("text to apply");
     },
-    [croppedBg, userName, textColor, buttonColor, currentAPY]
+    [croppedBg, userName, textColor]
   );
 
   // uiSteps
@@ -862,7 +862,8 @@ function IndexCardV4(props) {
 
   useEffect(() => {
     skipBgStep();
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [skipBgStep]);
 
   // useEffect(() => {
   //   // needs to run when stampSize changes
@@ -1059,7 +1060,7 @@ function IndexCardV4(props) {
                         setBackgroundColor={setBackgroundColor}
                         previewFinalCanvas={previewFinalCanvas}
                         applyTextLocation={applyTextLocation}
-                        setCurrentAPY={setCurrentAPY}
+                        setCurrentAPY={() => {}}
                         textPosition={textPosition}
                         setTextPosition={setTextPosition}
                         disabledImageButton={disabledImageButton}
