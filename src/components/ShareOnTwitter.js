@@ -11,9 +11,7 @@ function ShareOnTwitter(props) {
     } else {
       text = "i'm gmi";
     }
-    return `https://twitter.com/intent/tweet?url=https://www.indexcoop.com/&text=${encodeURIComponent(
-      text
-    )}&hashtags=$GMI,$INDEX,DeFi`;
+    return `https://twitter.com/intent/tweet?url=https://www.indexcoop.com/&text=${encodeURIComponent(text)}`;
   };
 
   const discordString = () => {
