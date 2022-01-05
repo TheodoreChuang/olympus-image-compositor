@@ -2,7 +2,7 @@ import "./App.css";
 
 // import { ThemeProvider } from "@material-ui/core/styles";
 // import CssBaseline from "@material-ui/core/CssBaseline";
-import useGoogleAnalytics from "./hooks/useGoogleAnalytics";
+// import useGoogleAnalytics from "./hooks/useGoogleAnalytics";
 // import useWindowSize from "./hooks/useWindowSize";
 
 // import { dark as darkTheme } from "./themes/dark.js"
@@ -13,15 +13,15 @@ import "./components/stake.scss";
 // import CompositorV2 from './components/CompositorV2';
 // import MainNavLinks from './components/MainNavLinks';
 // import IndexCardV3 from './components/IndexCardV3';
-import CompositorV4 from "./components/CompositorV4";
-import MainNavLinksV4 from "./components/MainNavLinksV4";
+// import CompositorV4 from "./components/CompositorV4";
+// import MainNavLinksV4 from "./components/MainNavLinksV4";
 import IndexCardV4 from "./components/IndexCardV4";
 // import SOhmLogoBottomBar from "./components/SOhmLogoBottomBar";
 
-import { Switch, Route } from "react-router-dom";
+// import { Switch, Route } from "react-router-dom";
 
 function App() {
-  useGoogleAnalytics();
+  // useGoogleAnalytics();
   // const windowSize = useWindowSize();
 
   // const stakeStyle = {
@@ -30,7 +30,8 @@ function App() {
   // }
   return (
     <div id="stake-view">
-      <Switch>
+      <IndexCardV4 />
+      {/* <Switch>
         <Route path="/pof">
           <CompositorV4 />
         </Route>
@@ -40,7 +41,7 @@ function App() {
         <Route exact path="/">
           <MainNavLinksV4 />
         </Route>
-      </Switch>
+      </Switch> */}
     </div>
   );
 }

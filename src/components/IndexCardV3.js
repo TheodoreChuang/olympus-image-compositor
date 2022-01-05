@@ -233,7 +233,7 @@ function CompositorV3(props) {
     // scalingRatio for scaling text size on mobile...
     const scalingRatio = fixedHeight / croppedBg.governing_height;
 
-    // var redHatFont = new FontFace("RedHatDisplay", "../assets/fonts/");
+    // var redHatFont = new FontFace("IBMPlexSans", "../assets/fonts/");
     // redHatFont.load().then(function(font){
     //   // with canvas, if this is ommited won't work
     //   document.fonts.add(font);
@@ -312,14 +312,14 @@ function CompositorV3(props) {
 
       // console.log(scalingRatio, "fontSize", fontSize);
       ctx.fillStyle = useTextColor;
-      ctx.font = fontSize + "px RedHatDisplay";
+      ctx.font = fontSize + "px IBMPlexSans";
       ctx.fillText(nameString, newX, newY);
 
       // lineIndex 1 & 2 are 128 tall in total
       // lineIndex = 1;
       let linePosition = 64 / scalingRatio;
       fontSize = 48 / scalingRatio;
-      ctx.font = "bold " + fontSize + "px RedHatDisplay";
+      ctx.font = "bold " + fontSize + "px IBMPlexSans";
       ctx.fillText("They are earning", newX, newY + linePosition);
       // lineIndex = 2;
       linePosition = 64 / scalingRatio + linePosition;
@@ -328,7 +328,7 @@ function CompositorV3(props) {
       // lineIndex 3 & 4 are 48 tall in total
       // lineIndex = 3;
       linePosition = 36 / scalingRatio + linePosition;
-      ctx.font = 21 / scalingRatio + "px RedHatDisplay";
+      ctx.font = 21 / scalingRatio + "px IBMPlexSans";
       ctx.fillText("When you’re ready, we’re ready with your", newX, newY + linePosition);
       // lineIndex = 4;
       linePosition = 26 / scalingRatio + linePosition;
@@ -374,7 +374,7 @@ function CompositorV3(props) {
 
       // letters in button
       ctx.fillStyle = useButtonColor;
-      ctx.font = 20 / scalingRatio + "px RedHatDisplay";
+      ctx.font = 20 / scalingRatio + "px IBMPlexSans";
       ctx.fillText("index.coop", x, y + 6 / scalingRatio);
       ///////////////////////////// BUTTON /////////////////////////////
       setLastTextEvent(e);
@@ -916,10 +916,10 @@ function CompositorV3(props) {
 
               <div style={{ flexGrow: "0" }}>
                 <div style={{ display: "flex", flexFlow: "column wrap" }}>
-                  <Typography variant="body1" style={{ fontFamily: "RedHatDisplay", marginTop: "0.25rem" }}>
+                  <Typography variant="body1" style={{ fontFamily: "IBMPlexSans", marginTop: "0.25rem" }}>
                     Optimal Aspect Ratio: {fixedWidth}/{fixedHeight} (width/height).
                   </Typography>
-                  <Typography variant="body1" style={{ fontFamily: "RedHatDisplay", margin: "0.1rem" }}>
+                  <Typography variant="body1" style={{ fontFamily: "IBMPlexSans", margin: "0.1rem" }}>
                     Don't worry, fren. You can crop on next step.
                   </Typography>
                 </div>
@@ -995,10 +995,10 @@ function CompositorV3(props) {
             </Button>
             <div style={{ flexGrow: "0" }}>
               <div style={{ display: "flex", flexFlow: "column wrap" }}>
-                <Typography variant="body1" style={{ fontFamily: "RedHatDisplay", marginTop: "0.25rem" }}>
+                <Typography variant="body1" style={{ fontFamily: "IBMPlexSans", marginTop: "0.25rem" }}>
                   Don't like your background?
                 </Typography>
-                <Typography variant="body1" style={{ fontFamily: "RedHatDisplay", margin: "0.1rem" }}>
+                <Typography variant="body1" style={{ fontFamily: "IBMPlexSans", margin: "0.1rem" }}>
                   Don't worry, fren. You can bucket fill it on next step.
                 </Typography>
               </div>

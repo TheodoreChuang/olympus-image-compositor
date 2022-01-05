@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 
 import { Box, Typography, Button } from "@material-ui/core";
 
-import CloudUploadIcon from "./CloudUploadIcon";
+// import CloudUploadIcon from "./CloudUploadIcon";
 
-import SizeSlider from "./SizeSlider";
+// import SizeSlider from "./SizeSlider";
 
 function LogoResizer(props) {
   return (
@@ -25,10 +25,10 @@ function LogoResizer(props) {
       }
     >
       {/* TODO (appleseed): do you want click to replace option on POF? */}
-      <Typography className={props.isPfp ? "direction-text pfp-dt" : "direction-text pof-dt"}>
+      {/* <Typography className={props.isPfp ? "direction-text pfp-dt" : "direction-text pof-dt"}>
         {props.directionText}
-      </Typography>
-      {props.isPfp ? (
+      </Typography> */}
+      {/* {props.isPfp ? (
         <Box className="pfp-mask pfp-box" display="flex" onClick={props.onStampClick}>
           <Box style={{ position: "absolute" }}>
             <CloudUploadIcon viewBox="0 0 102 48" />
@@ -51,15 +51,15 @@ function LogoResizer(props) {
             alt="stamp"
           />
         </Box>
-      )}
-      <SizeSlider
+      )} */}
+      {/* <SizeSlider
         valueLabelDisplay="auto"
         aria-label="size slider"
         defaultValue={props.stampWidth}
         min={props.minSize}
         max={props.maxSize}
         onChange={props.resizeStamp}
-      />
+      /> */}
       {/*showCanvas && */}
       <Box display="flex" style={props.buttonsContainerStyle} textAlign="center">
         <Box style={{ marginBottom: "1rem" }}>
@@ -67,11 +67,11 @@ function LogoResizer(props) {
             <Typography className="btn-text">{props.downloadText}</Typography>
           </Button>
         </Box>
-        <Box>
+        {/* <Box>
           <Button id="back-button" variant="outlined" className="outlined-index-button" onClick={props.goBackToStart}>
             <Typography className="btn-text">Start Over</Typography>
           </Button>
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );

@@ -31,7 +31,7 @@ import "./stake.scss";
 import "./figma.scss";
 
 import sOhm from "../assets/token_sOHM-transparent.png";
-import whiteBg from "../assets/whiteBg.png";
+import gmiBanner from "../assets/gmiBanner.png";
 import classifyImage, { classifyIndexImage } from "../helpers/classifyImage";
 import RGB2Hex from "../helpers/RGB2Hex";
 import { setDPI, drawFinalCanvas } from "../helpers/drawCanvas.js";
@@ -81,8 +81,8 @@ function IndexCardV4(props) {
 
   const [stampFile, setStampFile] = useState(undefined);
   const sOhmSize = 60;
-  const fixedWidth = 1013;
-  const fixedHeight = 446;
+  const fixedWidth = 3000;
+  const fixedHeight = 1000;
 
   const viewContainerRef = React.useRef(null);
   const bgCanvasRef = React.useRef(null);
@@ -190,10 +190,10 @@ function IndexCardV4(props) {
   // const [textListenersApplied, setTextListenersApplied] = useState(false);
   const [userName, setUserName] = useState("[your name]");
   const [textColor, setTextColor] = useState({
-    hex: "#000000",
-    rgb: { r: 0, g: 0, b: 0, a: 100 },
+    hex: "#FFF",
+    rgb: { r: 255, g: 255, b: 255, a: 100 },
   });
-  const [textPosition, setTextPosition] = useState("left");
+  const [textPosition, setTextPosition] = useState("right");
   // default white
   const [buttonColor, setButtonColor] = useState({
     hex: "#FFFFFF",
@@ -322,7 +322,7 @@ function IndexCardV4(props) {
       const setTextLeftOrRight = (leftRight, fontSize) => {
         // newY should be scaled based on canvasOnly.height
         // const newY = 67 + fontSize;
-        var newY = (75 / 950) * canvasOnly.height;
+        var newY = (100 / 950) * canvasOnly.height;
         var newX;
         // console.log("offsetX", offsetX, parseFloat(canvasOnly.style.width)/2, canvasOnly.style.width);
         if (leftRight === "left") {
@@ -345,14 +345,12 @@ function IndexCardV4(props) {
         return [newX, newY];
       };
 
-      let name = userName;
-      let nameString = "Meet " + name;
       let useTextColor = textColor.hex;
-      let useButtonColor = buttonColor.hex;
+      // let useButtonColor = buttonColor.hex;
 
       const textToApply = leftRight => {
         var fontSize;
-        fontSize = 29 / scalingRatio;
+        fontSize = 50 / scalingRatio;
         console.log("offsetX");
         var [newX, newY] = setTextLeftOrRight(leftRight, fontSize);
         console.log("r", newX, newY);
@@ -368,69 +366,73 @@ function IndexCardV4(props) {
         // console.log(scalingRatio, "fontSize", fontSize);
         ctx.fillStyle = useTextColor;
         ctx.font = "500 " + fontSize + "px RedHatDisplay";
-        ctx.fillText(nameString, newX, newY);
+        ctx.fillText(`This is ${userName}`, newX, newY);
 
         // lineIndex 1 & 2 are 128 tall in total
         // lineIndex = 1;
-        let linePosition = 64 / scalingRatio;
-        fontSize = 48 / scalingRatio;
+        let linePosition = 110 / scalingRatio;
+        fontSize = 70 / scalingRatio;
         ctx.font = "bold " + fontSize + "px RedHatDisplay";
-        ctx.fillText("They are earning", newX, newY + linePosition);
+        ctx.fillText(`${userName} is holding chad coins and`, newX, newY + linePosition);
         // lineIndex = 2;
-        linePosition = 64 / scalingRatio + linePosition;
-        ctx.fillText(currentAPY + "% APY.", newX, newY + linePosition);
+        linePosition = 80 / scalingRatio + linePosition;
+        ctx.fillText("earning yield on yield with $GMI", newX, newY + linePosition);
 
         // lineIndex 3 & 4 are 48 tall in total
         // lineIndex = 3;
-        linePosition = 36 / scalingRatio + linePosition;
-        ctx.font = "normal " + 21 / scalingRatio + "px RedHatDisplay";
-        ctx.fillText("When you’re ready, we’re ready with your", newX, newY + linePosition);
+        linePosition = 100 / scalingRatio + linePosition;
+        ctx.font = "normal " + 50 / scalingRatio + "px RedHatDisplay";
+        ctx.fillText(`${userName} is GMI`, newX, newY + linePosition);
+        // ctx.font = "bold " + 50 / scalingRatio + "px RedHatDisplay";
+        // ctx.fillText(`GMI`, `${newX + 100}`, newY + linePosition);
+
         // lineIndex = 4;
-        linePosition = 26 / scalingRatio + linePosition;
-        ctx.fillText("Index account. Earn rewards every 8 hours.", newX, newY + linePosition);
+        linePosition = 120 / scalingRatio + linePosition;
+        ctx.font = "italic " + 50 / scalingRatio + "px RedHatDisplay";
+        ctx.fillText("Are you?", newX, newY + linePosition);
 
         ///////////////////////////// BUTTON /////////////////////////////
-        // button -> top left corner @ linePosition
-        linePosition = 31 / scalingRatio + linePosition;
-        // ctx.drawImage(button, newX, newY+linePosition)
-        let radius = 28 / scalingRatio;
-        let x = newX + radius;
-        let y = newY + linePosition + radius;
-        let length = 182 / scalingRatio;
+        // // button -> top left corner @ linePosition
+        // linePosition = 31 / scalingRatio + linePosition;
+        // // ctx.drawImage(button, newX, newY+linePosition)
+        // let radius = 28 / scalingRatio;
+        // let x = newX + radius;
+        // let y = newY + linePosition + radius;
+        // let length = 182 / scalingRatio;
 
-        // left semi-circle
-        // ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise);
-        ctx.beginPath();
-        ctx.arc(x, y, radius, Math.PI / 2, (3 * Math.PI) / 2, false);
-        ctx.fill();
-        ctx.closePath();
+        // // left semi-circle
+        // // ctx.arc(x, y, radius, startAngle, endAngle, counterclockwise);
+        // ctx.beginPath();
+        // ctx.arc(x, y, radius, Math.PI / 2, (3 * Math.PI) / 2, false);
+        // ctx.fill();
+        // ctx.closePath();
 
-        // rect in middle
-        ctx.beginPath();
-        ctx.moveTo(x, y - radius);
-        ctx.fillRect(x, y - radius, length, radius * 2);
-        ctx.closePath();
+        // // rect in middle
+        // ctx.beginPath();
+        // ctx.moveTo(x, y - radius);
+        // ctx.fillRect(x, y - radius, length, radius * 2);
+        // ctx.closePath();
 
-        // rect in gaps
-        ctx.beginPath();
-        ctx.moveTo(x - 1, y - radius + 1);
-        ctx.fillRect(x - 1, y - radius + 1, 2, radius * 2 - 1);
-        ctx.closePath();
-        ctx.beginPath();
-        ctx.moveTo(x + length - 1, y - radius + 1);
-        ctx.fillRect(x + length - 1, y - radius + 1, 2, radius * 2 - 1);
-        ctx.closePath();
+        // // rect in gaps
+        // ctx.beginPath();
+        // ctx.moveTo(x - 1, y - radius + 1);
+        // ctx.fillRect(x - 1, y - radius + 1, 2, radius * 2 - 1);
+        // ctx.closePath();
+        // ctx.beginPath();
+        // ctx.moveTo(x + length - 1, y - radius + 1);
+        // ctx.fillRect(x + length - 1, y - radius + 1, 2, radius * 2 - 1);
+        // ctx.closePath();
 
-        // right semi-circle
-        ctx.beginPath();
-        ctx.arc(x + length, y, radius, Math.PI / 2, (3 * Math.PI) / 2, true);
-        ctx.fill();
-        ctx.closePath();
+        // // right semi-circle
+        // ctx.beginPath();
+        // ctx.arc(x + length, y, radius, Math.PI / 2, (3 * Math.PI) / 2, true);
+        // ctx.fill();
+        // ctx.closePath();
 
-        // letters in button
-        ctx.fillStyle = useButtonColor;
-        ctx.font = "500 " + 20 / scalingRatio + "px RedHatDisplay";
-        ctx.fillText("index.coop", x, y + 6 / scalingRatio);
+        // // letters in button
+        // ctx.fillStyle = useButtonColor;
+        // ctx.font = "500 " + 20 / scalingRatio + "px RedHatDisplay";
+        // ctx.fillText("index.coop", x, y + 6 / scalingRatio);
         ///////////////////////////// BUTTON /////////////////////////////
         // setLastTextEvent(e);
       };
@@ -848,7 +850,7 @@ function IndexCardV4(props) {
       setDisabledImageButton(true);
       goToPfpStep(true);
     };
-    image.src = whiteBg;
+    image.src = gmiBanner;
   };
 
   const goToLastStep = e => {
@@ -857,6 +859,10 @@ function IndexCardV4(props) {
     skipBgStep();
     e.stopPropagation();
   };
+
+  useEffect(() => {
+    skipBgStep();
+  }, []);
 
   // useEffect(() => {
   //   // needs to run when stampSize changes

@@ -7,14 +7,14 @@ import SquareLightWOFF from "../assets/fonts/EuclidSquare-Light.woff";
 import SquareMediumWOFF from "../assets/fonts/EuclidSquare-Medium.woff";
 import RedHatDisplayWOFF from "../assets/fonts/red-hat-display-v4-latin-ext_latin-regular.woff";
 import RedHatDisplayTTF from "../assets/fonts/red-hat-display-v4-latin-ext_latin-regular.ttf";
-import RedHatDisplayMediumTTF from "../assets/fonts/RedHatDisplay-Medium.ttf";
-import RedHatDisplayBoldTTF from "../assets/fonts/RedHatDisplay-Bold.ttf";
+import RedHatDisplayMediumTTF from "../assets/fonts/IBMPlexSans-Medium.ttf";
+import RedHatDisplayBoldTTF from "../assets/fonts/IBMPlexSans-Bold.ttf";
 
-import OpenSansExtraBoldTTF from "../assets/fonts/OpenSans-ExtraBold.ttf"
-import OpenSansRegularTTF from "../assets/fonts/OpenSans-Regular.ttf"
+import OpenSansExtraBoldTTF from "../assets/fonts/OpenSans-ExtraBold.ttf";
+import OpenSansRegularTTF from "../assets/fonts/OpenSans-Regular.ttf";
 
 const openSansExtraBold = {
-  fontFamily: 'Open Sans',
+  fontFamily: "Open Sans",
   fontStyle: "bold",
   fontWeight: 800,
   src: `
@@ -24,7 +24,7 @@ const openSansExtraBold = {
 };
 
 const openSansRegular = {
-  fontFamily: 'Open Sans',
+  fontFamily: "Open Sans",
   fontStyle: "normal",
   fontWeight: 500,
   src: `
@@ -34,7 +34,7 @@ const openSansRegular = {
 };
 
 const redHatDisplay = {
-  fontFamily: 'RedHatDisplay',
+  fontFamily: "IBMPlexSans",
   fontStyle: "normal",
   fontWeight: 400,
   src: `
@@ -47,7 +47,7 @@ const redHatDisplay = {
 };
 
 const redHatDisplayMedium = {
-  fontFamily: 'RedHatDisplay',
+  fontFamily: "IBMPlexSans",
   fontStyle: "medium",
   fontWeight: 500,
   src: `
@@ -59,7 +59,7 @@ const redHatDisplayMedium = {
 };
 
 const redHatDisplayBold = {
-  fontFamily: 'RedHatDisplay',
+  fontFamily: "IBMPlexSans",
   fontStyle: "bold",
   fontWeight: 700,
   src: `
@@ -165,7 +165,7 @@ const fonts = [
   squareLight,
   squareMedium,
   squareBold,
-  squareItalic
+  squareItalic,
 ];
 
 export default fonts;
