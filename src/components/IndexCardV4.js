@@ -929,7 +929,7 @@ function IndexCardV4(props) {
       <Box display="flex" style={{ flexFlow: "column", alignItems: "center" }}>
         <WelcomeHeadline
           headline={"$GMI Banner"}
-          subText={"Personalized your socials to let everyone know you're GMI"}
+          subText={"personalize your socials to let everyone know you're GMI"}
         />
         {/*<Box className="card-nav" elevation={3} style={compositorPaper}>*/}
         <Box id="outer-wrap" className="module-border-wrap" style={{ maxWidth: "1100px", alignSelf: "center" }}>

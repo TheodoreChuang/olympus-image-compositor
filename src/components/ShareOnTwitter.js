@@ -7,13 +7,13 @@ function ShareOnTwitter(props) {
   const urlString = () => {
     var text;
     if (props.inIndexCard) {
-      text = "I'm earning yield on yield with $GMI";
+      text = "i'm gmi";
     } else {
-      text = "I'm earning yield on yield with $GMI";
+      text = "i'm gmi";
     }
     return `https://twitter.com/intent/tweet?url=https://www.indexcoop.com/&text=${encodeURIComponent(
       text
-    )}&hashtags=$GMI,$DEFI`;
+    )}&hashtags=$GMI,$INDEX,DeFi`;
   };
 
   const discordString = () => {
