@@ -288,7 +288,7 @@ function IndexCardV4(props) {
       // scalingRatio for scaling text size on mobile...
       const scalingRatio = fixedHeight / croppedBg.governing_height;
 
-      // var redHatFont = new FontFace("RedHatDisplay", "../assets/fonts/");
+      // var redHatFont = new FontFace("IBMPlexSans", "../assets/fonts/");
       // redHatFont.load().then(function(font){
       //   // with canvas, if this is ommited won't work
       //   document.fonts.add(font);
@@ -322,7 +322,7 @@ function IndexCardV4(props) {
       const setTextLeftOrRight = (leftRight, fontSize) => {
         // newY should be scaled based on canvasOnly.height
         // const newY = 67 + fontSize;
-        var newY = (100 / 950) * canvasOnly.height;
+        var newY = (120 / 950) * canvasOnly.height;
         var newX;
         // console.log("offsetX", offsetX, parseFloat(canvasOnly.style.width)/2, canvasOnly.style.width);
         if (leftRight === "left") {
@@ -337,7 +337,7 @@ function IndexCardV4(props) {
           // desired: [x, y] = [375, 75] on [w, h] = [2154, 950]
           // x/w === 375/2154
           // y/h === 75/950
-          newX = (375 / 2154) * canvasOnly.width;
+          newX = (685 / 2154) * canvasOnly.width;
           // newX = canvasOnly.width - 67;
         }
         console.log("return");
@@ -350,7 +350,7 @@ function IndexCardV4(props) {
 
       const textToApply = leftRight => {
         var fontSize;
-        fontSize = 50 / scalingRatio;
+        fontSize = 65 / scalingRatio;
         console.log("offsetX");
         var [newX, newY] = setTextLeftOrRight(leftRight, fontSize);
         console.log("r", newX, newY);
@@ -365,30 +365,32 @@ function IndexCardV4(props) {
 
         // console.log(scalingRatio, "fontSize", fontSize);
         ctx.fillStyle = useTextColor;
-        ctx.font = "500 " + fontSize + "px RedHatDisplay";
+        ctx.textAlign = "right";
+
+        ctx.font = "500 " + fontSize + "px IBMPlexSans";
         ctx.fillText(`This is ${userName}`, newX, newY);
 
         // lineIndex 1 & 2 are 128 tall in total
         // lineIndex = 1;
         let linePosition = 110 / scalingRatio;
-        fontSize = 70 / scalingRatio;
-        ctx.font = "bold " + fontSize + "px RedHatDisplay";
+        fontSize = 85 / scalingRatio;
+        ctx.font = "bold " + fontSize + "px IBMPlexSans";
         ctx.fillText(`${userName} is holding chad coins and`, newX, newY + linePosition);
         // lineIndex = 2;
-        linePosition = 80 / scalingRatio + linePosition;
+        linePosition = 90 / scalingRatio + linePosition;
         ctx.fillText("earning yield on yield with $GMI", newX, newY + linePosition);
 
         // lineIndex 3 & 4 are 48 tall in total
         // lineIndex = 3;
-        linePosition = 100 / scalingRatio + linePosition;
-        ctx.font = "normal " + 50 / scalingRatio + "px RedHatDisplay";
+        linePosition = 120 / scalingRatio + linePosition;
+        ctx.font = "normal " + 70 / scalingRatio + "px IBMPlexSans";
         ctx.fillText(`${userName} is GMI`, newX, newY + linePosition);
-        // ctx.font = "bold " + 50 / scalingRatio + "px RedHatDisplay";
+        // ctx.font = "bold " + 50 / scalingRatio + "px IBMPlexSans";
         // ctx.fillText(`GMI`, `${newX + 100}`, newY + linePosition);
 
         // lineIndex = 4;
         linePosition = 120 / scalingRatio + linePosition;
-        ctx.font = "italic " + 50 / scalingRatio + "px RedHatDisplay";
+        ctx.font = "italic " + 70 / scalingRatio + "px IBMPlexSans";
         ctx.fillText("Are you?", newX, newY + linePosition);
 
         ///////////////////////////// BUTTON /////////////////////////////
@@ -431,7 +433,7 @@ function IndexCardV4(props) {
 
         // // letters in button
         // ctx.fillStyle = useButtonColor;
-        // ctx.font = "500 " + 20 / scalingRatio + "px RedHatDisplay";
+        // ctx.font = "500 " + 20 / scalingRatio + "px IBMPlexSans";
         // ctx.fillText("index.coop", x, y + 6 / scalingRatio);
         ///////////////////////////// BUTTON /////////////////////////////
         // setLastTextEvent(e);
@@ -865,7 +867,7 @@ function IndexCardV4(props) {
       skipBgStep();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [skipBgStep]);
+  }, []);
 
   // useEffect(() => {
   //   // needs to run when stampSize changes
@@ -925,7 +927,10 @@ function IndexCardV4(props) {
   return (
     <Fade in={fadeTransition} timeout={{ enter: fadeOutMs, exit: fadeOutMs }} style={{ width: "100%" }}>
       <Box display="flex" style={{ flexFlow: "column", alignItems: "center" }}>
-        <WelcomeHeadline headline={"Index Card"} subText={"Personalized card to show off your gains."} />
+        <WelcomeHeadline
+          headline={"$GMI Banner"}
+          subText={"Personalized your socials to let everyone know you're GMI"}
+        />
         {/*<Box className="card-nav" elevation={3} style={compositorPaper}>*/}
         <Box id="outer-wrap" className="module-border-wrap" style={{ maxWidth: "1100px", alignSelf: "center" }}>
           {/*<Box display="flex" alignItems="center" className="module">*/}
@@ -978,10 +983,10 @@ function IndexCardV4(props) {
                       </Box>
                       <div style={{ flexGrow: "0", bottom: "0", position: "absolute", paddingBottom: "10px" }}>
                         <div style={{ display: "flex", flexFlow: "column wrap" }}>
-                          <Typography variant="body1" style={{ fontFamily: "RedHatDisplay", marginTop: "0.25rem" }}>
+                          <Typography variant="body1" style={{ fontFamily: "IBMPlexSans", marginTop: "0.25rem" }}>
                             Optimal Aspect Ratio: {fixedWidth}/{fixedHeight} (width/height).
                           </Typography>
-                          <Typography variant="body1" style={{ fontFamily: "RedHatDisplay", margin: "0.1rem" }}>
+                          <Typography variant="body1" style={{ fontFamily: "IBMPlexSans", margin: "0.1rem" }}>
                             Don't worry, fren. You can crop on next step.
                           </Typography>
                         </div>
@@ -1142,19 +1147,19 @@ function IndexCardV4(props) {
         <Box style={{ overflow: "hidden", position: "relative" }}>
           <Typography
             variant="body1"
-            style={{ fontFamily: "RedHatDisplay", fontWeight: "normal", position: "absolute", bottom: "-100px" }}
+            style={{ fontFamily: "IBMPlexSans", fontWeight: "normal", position: "absolute", bottom: "-100px" }}
           >
             Test
           </Typography>
           <Typography
             variant="body1"
-            style={{ fontFamily: "RedHatDisplay", fontWeight: "500", position: "absolute", bottom: "-100px" }}
+            style={{ fontFamily: "IBMPlexSans", fontWeight: "500", position: "absolute", bottom: "-100px" }}
           >
             Test
           </Typography>
           <Typography
             variant="body1"
-            style={{ fontFamily: "RedHatDisplay", fontWeight: "bold", position: "absolute", bottom: "-100px" }}
+            style={{ fontFamily: "IBMPlexSans", fontWeight: "bold", position: "absolute", bottom: "-100px" }}
           >
             Test
           </Typography>
