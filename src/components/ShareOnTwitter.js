@@ -7,15 +7,17 @@ function ShareOnTwitter(props) {
   const urlString = () => {
     var text;
     if (props.inIndexCard) {
-      text = "Come say hi!";
+      text = "I'm earning yield on yield with $GMI";
     } else {
-      text = "Come say hi!";
+      text = "I'm earning yield on yield with $GMI";
     }
-    return `https://twitter.com/intent/tweet?url=https://www.indexcoop.com/&text=${encodeURIComponent(text)}`;
+    return `https://twitter.com/intent/tweet?url=https://www.indexcoop.com/&text=${encodeURIComponent(
+      text
+    )}&hashtags=$GMI,$DEFI`;
   };
 
   const discordString = () => {
-    return "https://discord.gg/indexcoop ";
+    return "https://discord.gg/indexcoop";
   };
 
   return (
@@ -29,7 +31,7 @@ function ShareOnTwitter(props) {
         href={urlString()}
         target="_blank"
         data-text="w"
-        data-hashtags="olympus"
+        data-hashtags="$GMI"
         // endIcon={<TwitterIcon />}
       >
         <Typography className="btn-text" style={{ marginRight: "6px" }}>
@@ -46,7 +48,7 @@ function ShareOnTwitter(props) {
         href={discordString()}
         target="_blank"
         data-text="w"
-        data-hashtags="olympus"
+        data-hashtags="$GMI"
       >
         <img alt="test" height="24" src={discordLogo} />
       </Button>

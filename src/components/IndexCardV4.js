@@ -19,7 +19,7 @@ import {
   // browserName
 } from "react-device-detect";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import CloudUploadIcon from "./CloudUploadIcon.js";
+// import CloudUploadIcon from "./CloudUploadIcon.js";
 import ShareOnTwitter from "./ShareOnTwitter.js";
 
 import React, { useState, useEffect, useCallback } from "react";
@@ -40,7 +40,7 @@ import { getViewWidth, heightFromAspectRatio } from "../helpers/index.js";
 import useWindowSize from "../hooks/useWindowSize";
 
 import PfpCanvas from "./PfpCanvas";
-import BgCanvas from "./BgCanvas";
+// import BgCanvas from "./BgCanvas";
 import TextCanvas from "./TextCanvas";
 import WelcomeHeadline from "./WelcomeHeadline";
 
@@ -133,11 +133,11 @@ function IndexCardV4(props) {
   //   // position: "relative",
   // };
 
-  const cropperCanvasContainer = {
-    width: areaWd + 20,
-    margin: "10px",
-    borderRadius: "16px",
-  };
+  // const cropperCanvasContainer = {
+  //   width: areaWd + 20,
+  //   margin: "10px",
+  //   borderRadius: "16px",
+  // };
 
   // const dropZoneReg = {
   //   display: "flex",
@@ -160,21 +160,21 @@ function IndexCardV4(props) {
     alignItems: "center",
   };
 
-  const outlineButton = {
-    height: "33px",
-    marginLeft: "0.25rem",
-    marginRight: "0.25rem",
-    marginTop: "0.5rem",
-    marginBottom: "0.5rem",
-  };
+  // const outlineButton = {
+  //   height: "33px",
+  //   marginLeft: "0.25rem",
+  //   marginRight: "0.25rem",
+  //   marginTop: "0.5rem",
+  //   marginBottom: "0.5rem",
+  // };
 
-  const containerButton = {
-    height: "33px",
-    marginLeft: "0.25rem",
-    marginRight: "0.25rem",
-    marginTop: "0.5rem",
-    marginBottom: "0.5rem",
-  };
+  // const containerButton = {
+  //   height: "33px",
+  //   marginLeft: "0.25rem",
+  //   marginRight: "0.25rem",
+  //   marginTop: "0.5rem",
+  //   marginBottom: "0.5rem",
+  // };
 
   const [fileImage, setfileImage] = useState(false);
   const [fileImageType, setfileImageType] = useState("image/png");
@@ -549,7 +549,7 @@ function IndexCardV4(props) {
 
   // STEP 1
   // dropzone handling
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps } = useDropzone({
     // heic/heif images aren't allowable...
     accept: "image/*",
     multiple: false,
@@ -600,7 +600,7 @@ function IndexCardV4(props) {
   });
 
   // react-cropper
-  const cropperRef = React.useRef(null);
+  // const cropperRef = React.useRef(null);
 
   // PIXELATED logo issue:
   // Canvases have two different 'sizes': their DOM width/height and their CSS width/height...
@@ -818,10 +818,10 @@ function IndexCardV4(props) {
     }
   };
 
-  const imageLoaded = () => {
-    // this isn't quite working
-    setIsLoading(false);
-  };
+  // const imageLoaded = () => {
+  //   // this isn't quite working
+  //   setIsLoading(false);
+  // };
 
   const goBackToRoot = () => {
     setFadeTransition(false);
@@ -855,12 +855,12 @@ function IndexCardV4(props) {
     image.src = gmiBanner;
   };
 
-  const goToLastStep = e => {
-    e.preventDefault();
-    // console.log('go to last step');
-    skipBgStep();
-    e.stopPropagation();
-  };
+  // const goToLastStep = e => {
+  //   e.preventDefault();
+  //   // console.log('go to last step');
+  //   skipBgStep();
+  //   e.stopPropagation();
+  // };
 
   useEffect(() => {
     if (uiStep !== "pfp") {
@@ -957,7 +957,7 @@ function IndexCardV4(props) {
                 {uiStep === 1 && (
                   <div className="dropContainer" style={dropContainerStyle}>
                     <div {...getRootProps({ style: dropZoneReg })}>
-                      <input {...getInputProps()} />
+                      {/* <input {...getInputProps()} />
                       <Box className="dropzone-interior-container vertical-centered-flex">
                         <Box>
                           <CloudUploadIcon viewBox="0 0 102 48" />
@@ -990,13 +990,13 @@ function IndexCardV4(props) {
                             Don't worry, fren. You can crop on next step.
                           </Typography>
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 )}
                 {/*<Box id="mainContainer">*/}
                 {/* Background Cropper */}
-                {uiStep === "bg" && fileImage && (
+                {/* {uiStep === "bg" && fileImage && (
                   <BgCanvas
                     ref={{ cropperRef: cropperRef }}
                     imageLoaded={imageLoaded}
@@ -1012,7 +1012,7 @@ function IndexCardV4(props) {
                     containerStyle={dropContainerStyle}
                     aspectRatio={fixedWidth / fixedHeight}
                   />
-                )}
+                )} */}
 
                 {/* Image Resizer was here... but didn't look right */}
                 {/* 
