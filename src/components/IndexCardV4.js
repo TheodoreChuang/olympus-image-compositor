@@ -31,7 +31,7 @@ import "./stake.scss";
 import "./figma.scss";
 
 import sOhm from "../assets/token_sOHM-transparent.png";
-import gmiBanner from "../assets/gmiBanner.png";
+import gmiBanner from "../assets/gmiBrandBanner.png";
 import classifyImage, { classifyIndexImage } from "../helpers/classifyImage";
 import RGB2Hex from "../helpers/RGB2Hex";
 import { setDPI, drawFinalCanvas } from "../helpers/drawCanvas.js";
